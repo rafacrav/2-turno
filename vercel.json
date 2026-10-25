@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/tse/:path*", "destination": "https://resultados.tse.jus.br/oficial/:path*" },
+    { "source": "/", "destination": "/apuracao-2turno.html" }
+  ]
+}

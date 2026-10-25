@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apuração 2º turno 2026</title>
+<script>
+window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+if (!/^(localhost|127\.)/.test(location.hostname)) {
+  const s = document.createElement('script'); s.defer = true; s.src = '/_vercel/insights/script.js'; document.head.appendChild(s);
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E4E3DD;--panel:#F2F1EC;--ink:#18191B;--muted:#5D5F5E;--line:#C6C4BC;
+  --key:#18191B;--keyInk:#F2F1EC;--ok:#1E9A52;--warn:#E5762A;--err:#C2362F;
+  --cond:'Barlow Condensed','Arial Narrow',sans-serif;--sans:Barlow,system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#141517;--panel:#1D1E21;--ink:#ECEBE6;--muted:#9A9B97;--line:#303136;--key:#ECEBE6;--keyInk:#141517}
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.45 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding-left:18px;padding-right:18px}
+.num-t{font-variant-numeric:tabular-nums}
+button,select,input{font:600 14px var(--sans)}
+:focus-visible{outline:3px solid var(--ok);outline-offset:2px}
+a{color:inherit}
+
+/* barra do topo */
+.barra-topo{display:flex;justify-content:space-between;align-items:center;gap:12px 20px;flex-wrap:wrap;padding-top:16px;padding-bottom:14px;border-bottom:2px solid var(--ink)}
+.marca{font:700 24px/1 var(--cond);text-decoration:none}
+.marca small{font:500 14px var(--sans);color:var(--muted);margin-left:8px}
+.status{display:flex;align-items:center;justify-content:flex-end;gap:6px 16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.status .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ok);margin-right:7px;vertical-align:1px}
+.status.ok .dot{animation:pulso 2s ease-out infinite}
+.status.carregando .dot{background:var(--warn)}
+.status.erro .dot{background:var(--err)}
+@keyframes pulso{0%{box-shadow:0 0 0 0 rgba(30,154,82,.6)}70%{box-shadow:0 0 0 8px rgba(30,154,82,0)}100%{box-shadow:0 0 0 0 rgba(30,154,82,0)}}
+.msg-erro{color:var(--err);font-weight:500;flex-basis:100%;text-align:right}
+.tecla{display:inline-block;color:var(--keyInk);background:var(--key);border:0;border-radius:6px;padding:7px 14px;cursor:pointer;text-decoration:none;box-shadow:inset 0 -3px 0 rgba(0,0,0,.35)}
+.tecla:active,.voltar:active{transform:translateY(1px)}
+
+main{padding-bottom:40px;min-height:60vh}
+.vista-top{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;margin-top:20px}
+.voltar{display:inline-block;background:var(--warn);color:#18191B;font-weight:700;text-decoration:none;border-radius:6px;padding:7px 16px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.3)}
+.abas{display:flex;gap:6px;flex-wrap:wrap}
+.aba{text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:600}
+.aba:hover{border-color:var(--ink)}
+.aba[aria-current]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.titulo{font:700 clamp(32px,5.4vw,54px)/1 var(--cond);letter-spacing:-.01em;margin-top:18px}
+.local{color:var(--muted);margin-top:6px;font-size:16px}
+h2.sec{font:700 24px/1.1 var(--cond);margin-bottom:12px}
+.aviso{margin-top:24px;padding:18px;border:1px dashed var(--line);border-radius:12px;color:var(--muted)}
+
+/* home */
+.home{text-align:center}
+.home .tecla.grande{display:inline-flex;flex-direction:column;align-items:center;gap:2px;font:700 22px/1.1 var(--cond);padding:14px 34px 16px;border-radius:10px;margin-top:22px}
+.tecla.grande small{font:500 13px var(--sans);opacity:.8}
+.home .mapa{margin:26px auto 0;text-align:left}
+
+/* apuração */
+.apur{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:22px;padding:20px 0 4px}
+.apur .big{font:700 clamp(52px,10vw,96px)/.85 var(--cond)}
+.apur .rot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);margin-bottom:8px}
+.trilho{height:14px;background:var(--line);border-radius:7px;overflow:hidden}
+.trilho i{display:block;height:100%;width:0;background:var(--ink);transition:width .8s ease}
+
+/* duelo */
+.duelo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.lado{--c:#555;--t:#fff;position:relative;display:grid;grid-template-columns:minmax(130px,44%) 1fr;align-items:end;min-height:250px;background:var(--c);color:var(--t);border-radius:18px;overflow:hidden;transition:background .6s}
+.lado.b{grid-template-columns:1fr minmax(130px,44%)}
+.lado.b .retrato{order:2}
+.lado.b .dados{text-align:right;justify-items:end}
+.retrato{position:relative;width:100%;aspect-ratio:1;align-self:end}
+.retrato img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom}
+.retrato .ini{position:absolute;inset:0;display:grid;place-items:center;font:700 64px var(--cond);opacity:.5}
+.retrato.tem-foto .ini{display:none}
+.retrato.tse img{inset:9%;width:82%;height:82%;object-fit:cover;object-position:center 22%;border-radius:50%;box-shadow:0 0 0 4px rgba(255,255,255,.85);background:#fff}
+.dados{display:grid;gap:2px;padding:20px 20px 22px}
+.topo{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lado.b .topo{justify-content:flex-end}
+.num{display:inline-grid;place-items:center;min-width:34px;height:27px;padding:0 6px;background:var(--key);color:var(--keyInk);border-radius:5px;font:700 17px var(--cond);box-shadow:inset 0 -3px 0 rgba(0,0,0,.35)}
+.lado .num{background:rgba(0,0,0,.82);color:#fff}
+.pos{display:none;font:700 17px var(--cond)}
+.tag{background:var(--ok);color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:600}
+.lado .nome{font:700 clamp(22px,3vw,32px)/1.05 var(--cond);margin-top:6px}
+.lado .partido{font-size:14px;opacity:.85}
+.lado .pct{font:700 clamp(46px,7.4vw,84px)/.9 var(--cond);margin-top:10px}
+.lado .votos{font-size:14px;opacity:.9}
+.var{font-size:12px;font-weight:600;min-height:1.3em;opacity:.9}
+
+.cabo{position:relative;height:18px;border-radius:9px;background:var(--line);margin:16px 0 6px}
+.cabo i{position:absolute;top:0;bottom:0;width:0;transition:width .8s ease}
+.cabo .ca{left:0;background:var(--ca,#888);border-radius:9px 0 0 9px}
+.cabo .cb{right:0;background:var(--cb,#888);border-radius:0 9px 9px 0}
+.cabo .meio{position:absolute;left:50%;top:-6px;bottom:-6px;width:2px;margin-left:-1px;background:var(--ink)}
+.cabo-rot{position:relative;display:flex;justify-content:space-between;color:var(--muted);font-size:13px}
+.cabo-rot span:nth-child(2){position:absolute;left:50%;transform:translateX(-50%)}
+.leitura{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.leitura p{font:600 19px/1.2 var(--cond)}
+.chip{display:inline-block;border:2px solid var(--ink);border-radius:999px;padding:3px 12px;font-weight:600;font-size:14px}
+.chip.maioria{background:var(--ok);border-color:var(--ok);color:#fff}
+
+/* pódio (proporcional) */
+.podio{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.lado.compacto{grid-template-columns:1fr;min-height:0;align-items:start}
+.lado.compacto .retrato{width:62%;justify-self:center;margin-top:16px}
+.lado.compacto .dados{padding:12px 16px 16px}
+.lado.compacto .pos{display:inline}
+.lado.compacto .nome{font-size:24px}
+.lado.compacto .pct{font-size:clamp(34px,4.4vw,50px)}
+.lado.compacto .retrato:not(.tem-foto){aspect-ratio:auto;height:70px}
+
+/* grade e listas */
+.grade{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:36px;margin-top:32px}
+ol{list-style:none;padding:0}
+.cand{--c:var(--muted);display:grid;grid-template-columns:46px 1fr auto;gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+.foto{position:relative;width:46px;height:46px;border-radius:50%;overflow:hidden;background:var(--c);color:#fff;display:grid;place-items:center;font:600 16px var(--cond)}
+.foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 15%;background:color-mix(in srgb,var(--c) 30%,var(--panel))}
+.cand .nome{font:600 19px/1.1 var(--cond)}
+.cand .partido{color:var(--muted);font-size:13px}
+.pos-n{font:700 15px var(--cond);color:var(--muted);min-width:26px}
+.barra{position:relative;height:7px;background:var(--line);border-radius:4px;margin-top:7px}
+.barra i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:inherit;background:var(--c);transition:width .8s ease}
+.placar{text-align:right;min-width:84px}
+.cand .pct{font:700 24px/1 var(--cond)}
+.cand .votos{color:var(--muted);font-size:13px;margin-top:2px}
+.ver{background:none;border:0;padding:0;color:var(--muted);font-size:12px;text-decoration:underline;cursor:pointer}
+.dica{color:var(--muted);font-size:13px;margin:-4px 0 6px}
+
+.tot{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:24px}
+.tot div{background:var(--panel);padding:13px 16px}
+.tot dt{color:var(--muted);font-size:13px}
+.tot dd{font:700 24px/1.1 var(--cond);margin-top:2px}
+.tot small{font:500 14px var(--sans);color:var(--muted);margin-left:4px}
+
+/* bancada */
+.bancada{margin-top:34px}
+.dots{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.dot-v{width:16px;height:16px;border-radius:50%;background:var(--c,var(--line))}
+.chips{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px;font-size:14px}
+.chips span{display:inline-flex;align-items:center;gap:6px}
+.chips i{width:12px;height:12px;border-radius:3px;background:var(--c)}
+.busca{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink);font-weight:500;margin-bottom:6px}
+.mais{margin-top:14px;background:none;border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:8px 16px;cursor:pointer}
+
+/* mapa */
+.mapa-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+select{color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 10px;max-width:100%}
+.mapa{position:relative;max-width:440px;margin-top:14px}
+.home .mapa{max-width:640px}
+.msvg{display:block;width:100%;height:auto;overflow:visible;-webkit-tap-highlight-color:transparent}
+.est{cursor:pointer;outline:none}
+.est path.f{fill:var(--line);stroke:var(--bg);stroke-width:1.1;stroke-linejoin:round;transition:fill .6s}
+.est:focus{outline:none}
+.hl{fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linejoin:round;pointer-events:none;opacity:0;transition:opacity .1s}
+.hl.on{opacity:1}
+.est text{pointer-events:none;text-anchor:middle;dominant-baseline:central;font-family:var(--cond);font-weight:700;fill:var(--ink)}
+.est .sg{font-size:14px}
+.est .pc{font:500 10.5px var(--sans)}
+.est.vazio text{fill:var(--muted)}
+.chip-uf{cursor:pointer}
+.chip-uf rect{fill:var(--line);stroke:var(--bg);stroke-width:1.5;transition:fill .6s}
+.chip-uf.ativo rect{stroke:var(--ink);stroke-width:2.2}
+.chip-uf text{pointer-events:none;text-anchor:middle;dominant-baseline:central;font-family:var(--cond);font-weight:700;fill:var(--ink)}
+.chip-uf.vazio text{fill:var(--muted)}
+.chip-uf .sg{font-size:13px}
+.chip-uf .pc{font-size:10px}
+.lig{stroke:var(--muted);stroke-width:1;opacity:.55;fill:none;pointer-events:none}
+.bordas{fill:none;stroke:var(--bg);stroke-width:.01}
+.mtip{position:absolute;z-index:5;pointer-events:none;background:var(--ink);color:var(--bg);border-radius:8px;padding:7px 10px;font-size:13px;line-height:1.3;white-space:nowrap;opacity:0;transform:translate(-50%,-110%);transition:opacity .12s;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.mtip.on{opacity:1}
+.mtip b{font:700 16px var(--cond);display:block}
+.mtip .num-t{font-weight:600}
+.legenda{position:absolute;left:0;bottom:2%;max-width:40%;font-size:13px;color:var(--muted);pointer-events:none}
+.legenda ul{list-style:none;padding:0}
+.legenda li{display:flex;align-items:center;gap:8px;margin-top:5px;color:var(--ink)}
+.legenda .sw{width:14px;height:14px;border-radius:4px;background:var(--c);flex:none}
+.escala{height:10px;border-radius:5px;margin-top:6px;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 18%,var(--panel)),var(--c))}
+.escala-rot{display:flex;justify-content:space-between;margin-top:3px}
+
+/* panorama */
+.regiao{margin-top:22px}
+.regiao h3{font:700 18px var(--cond);color:var(--muted);margin-bottom:6px}
+.estado{display:block;text-decoration:none;padding:10px 0;border-bottom:1px solid var(--line)}
+.estado:hover .estado-top b{text-decoration:underline}
+.estado-top{display:flex;justify-content:space-between;gap:10px}
+.estado-top b{font:700 18px var(--cond)}
+.estado-top span{color:var(--muted);font-size:13px}
+.par{display:flex;justify-content:space-between;gap:10px;font-size:14px;margin-top:4px}
+.par b{font:700 16px var(--cond)}
+.split{display:flex;height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
+.split i{display:block;height:100%}
+.split i:last-child{margin-left:auto}
+
+/* gráfico */
+.evol-wrap{margin-top:40px}
+.graf-box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 10px 6px}
+.graf{display:block;width:100%;height:auto}
+.graf text{font:500 12px var(--sans);fill:var(--muted)}
+.graf .rotulo{font:700 14px var(--cond);fill:var(--ink)}
+.graf-vazio{color:var(--muted);padding:28px 12px;text-align:center}
+
+.fonte{color:var(--muted);font-size:13px;padding-top:16px;padding-bottom:30px;border-top:1px solid var(--line)}
+
+.fixo{position:sticky;top:16px;align-self:start}
+@media (max-width:860px){.grade{grid-template-columns:1fr}.fixo{position:static}}
+@media (max-width:640px){
+  .est .sg{font-size:20px}.est .pc{font-size:14px}.est.peq .pc{display:none}
+  .chip-uf .sg{font-size:19px;transform:translateX(17px)}.chip-uf .pc{display:none}
+  .legenda{position:static;max-width:none;margin-top:8px;pointer-events:auto}
+  .status{justify-content:flex-start}.msg-erro{text-align:left}
+  .apur{grid-template-columns:1fr;gap:10px}
+  .duelo{gap:8px}
+  .lado,.lado.b{grid-template-columns:1fr;min-height:0}
+  .lado.b .retrato{order:0}
+  .retrato{width:78%;justify-self:center}
+  .dados{padding:4px 12px 14px}
+  .lado .pct{font-size:40px}
+  .podio{grid-template-columns:1fr}
+  .lado.compacto{grid-template-columns:110px 1fr;align-items:end}
+  .lado.compacto .retrato{width:100%;margin:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap barra-topo">
+  <a class="marca" href="#/">Apuração 2026<small id="turnoTxt"></small></a>
+  <div class="status carregando" id="status" aria-live="polite">
+    <span><span class="dot"></span><span id="txtStatus">Carregando dados do TSE…</span></span>
+    <span id="contagem" class="num-t"></span>
+    <span id="medidor" class="num-t"></span>
+    <button class="tecla" id="btn" type="button">Atualizar agora</button>
+    <span class="msg-erro" id="erro" hidden></span>
+  </div>
+</header>
+<main class="wrap" id="app"></main>
+<footer class="wrap fonte">Dados oficiais do TSE (resultados.tse.jus.br). Percentuais de candidatos como o TSE divulga; brancos e nulos sobre o total de votos; abstenções sobre o eleitorado apurado.</footer>
+
+<script>
+const TURNO = 2;
+const INTERVALO = 5000;          // leitura do resultado aberto
+const INTERVALO_ESTADOS = 20000; // leitura dos 27 estados (mapa e panorama)
+const TSE = 'https://resultados.tse.jus.br/oficial/';
+const CICLO = 'ele2026';
+const ELEICAO = {federal: '6258', estadual: '6260'}; // conferido em comum/config/ele-c.json ao abrir
+const FOTOS_GLOBO = true; // recortes sem fundo (só imagem) para presidente e governador; o resto usa a foto do TSE
+const GLOBO_IMG = 'https://infograficos.oglobo.globo.com/eleicoes/2026/candidatos/';
+const COD = {presidente: 1, governador: 3, senador: 5, 'dep-federal': 6, 'dep-estadual': 7};
+const pad = (v, n) => String(v).padStart(n, '0');
+const cdDe = cargo => cargo === 'presidente' ? ELEICAO.federal : ELEICAO.estadual;
+function arqU(cargo, uf) {
+  const u = uf.toLowerCase(), cd = cdDe(cargo);
+  const cod = cargo === 'dep-estadual' && u === 'df' ? 8 : COD[cargo];
+  return `${CICLO}/${cd}/dados/${u}/${u}-c${pad(cod, 4)}-e${pad(cd, 6)}-u.json`;
+}
+const LOCAL = location.protocol.startsWith('http');
+const ROTAS = [
+  ...(LOCAL ? [p => '/tse/' + p] : []),
+  p => TSE + p,
+  p => 'https://corsproxy.io/?url=' + encodeURIComponent(TSE + p),
+];
+
+const CARGOS = {
+  presidente: {tipo: 'maj', uf: 'Presidente', br: 'Presidente'},
+  governador: {tipo: 'maj', uf: 'Governador', br: 'Governadores'},
+  senador: {tipo: 'sen', uf: 'Senador', br: 'Senado'},
+  'dep-federal': {tipo: 'prop', uf: 'Deputado federal', br: 'Câmara dos Deputados'},
+  'dep-estadual': {tipo: 'prop', uf: 'Deputado estadual', br: 'Assembleias'},
+};
+const cargosAtivos = () => ['presidente'];
+const nomeCargo = (k, loc) => loc === 'BR' ? CARGOS[k].br : (k === 'dep-estadual' && loc === 'DF' ? 'Deputado distrital' : CARGOS[k].uf);
+
+const NOMES = {AC:'Acre',AL:'Alagoas',AP:'Amapá',AM:'Amazonas',BA:'Bahia',CE:'Ceará',DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',MT:'Mato Grosso',MS:'Mato Grosso do Sul',MG:'Minas Gerais',PA:'Pará',PB:'Paraíba',PR:'Paraná',PE:'Pernambuco',PI:'Piauí',RJ:'Rio de Janeiro',RN:'Rio Grande do Norte',RS:'Rio Grande do Sul',RO:'Rondônia',RR:'Roraima',SC:'Santa Catarina',SP:'São Paulo',SE:'Sergipe',TO:'Tocantins'};
+const REGIOES = {'Norte':['AC','AM','AP','PA','RO','RR','TO'],'Nordeste':['AL','BA','CE','MA','PB','PE','PI','RN','SE'],'Centro-Oeste':['DF','GO','MS','MT'],'Sudeste':['ES','MG','RJ','SP'],'Sul':['PR','RS','SC']};
+const CORES = {agir:'#222D6D',avante:'#EAA883',cidadania:'#C8299A',dc:'#A0BA5A',democrata:'#46638C',missao:'#3A3A3A',mobi:'#631189',mobiliza:'#631189',mdb:'#9B9A91',novo:'#ED5F36',pcb:'#CC9042',pcdob:'#6D0A0A',pco:'#B70038',pdt:'#C9B665',pl:'#402AC4',pode:'#19D052',podemos:'#19D052',pp:'#B7957E',progressistas:'#B7957E',prd:'#50D79E',prtb:'#344C34',psb:'#AC3B3B',psd:'#7FA2E2',psdb:'#0A81CB',psol:'#FCB227',pstu:'#DD0101',pt:'#E3346A',pv:'#47893E',rede:'#C5D939',solidariedade:'#BE6032',sd:'#BE6032',republicanos:'#498087',uniao:'#4EC8F7',up:'#7C4067'};
+
+/* utilidades */
+const $ = id => document.getElementById(id);
+const nf = new Intl.NumberFormat('pt-BR');
+const num = s => Number(String(s ?? 0).replace(',', '.')) || 0;
+const pct = (x, d = 2) => num(x).toLocaleString('pt-BR', {minimumFractionDigits: d, maximumFractionDigits: d}) + '%';
+const pp = x => Math.abs(x).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' p.p.';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const slug = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const corPartido = p => CORES[slug(p)] || (slug(p).includes('uniao') ? CORES.uniao : '#257CFF');
+const MINUS = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'di', 'du']);
+const titulo = s => String(s || '').toLowerCase().split(/(\s+|-)/).map((w, i) => i > 0 && MINUS.has(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)).join('');
+const iniciais = n => { const p = String(n).split(/\s+/).filter(Boolean); return ((p[0]?.[0] || '') + (p.length > 1 ? p[p.length - 1][0] : '')).toUpperCase(); };
+const curto = n => String(n).split(/\s+/).pop();
+const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const dur = ms => { const s = Math.round(ms / 1000); return s < 90 ? `${s} s` : `${Math.round(s / 60)} min`; };
+const mediana = a => { const b = [...a].sort((x, y) => x - y); const m = b.length >> 1; return b.length % 2 ? b[m] : (b[m - 1] + b[m]) / 2; };
+
+function textoSobre(hex) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
+  if (!m) return '#fff';
+  const n = parseInt(m[1], 16);
+  const [r, g, b] = [n >> 16 & 255, n >> 8 & 255, n & 255].map(v => { v /= 255; return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; });
+  return .2126 * r + .7152 * g + .0722 * b > .2 ? '#18191B' : '#fff';
+}
+
+
+/* formato do TSE (arquivo de resultado unificado, -u.json) */
+function fotosDe(cargo, uf, n, sq) {
+  const L = [];
+  if (FOTOS_GLOBO && n && cargo === 'presidente') L.push(`${GLOBO_IMG}BR_${n}_PRES.webp`);
+  if (FOTOS_GLOBO && n && cargo === 'governador') L.push(`${GLOBO_IMG}${uf.toUpperCase()}_${n}_GOV.webp`);
+  if (sq) {
+    const p = `${CICLO}/${cdDe(cargo)}/fotos/${cargo === 'presidente' ? 'br' : uf.toLowerCase()}/${sq}.jpeg`;
+    L.push(TSE + p);
+    if (LOCAL) L.push('/tse/' + p);
+  }
+  return L;
+}
+function deTSE(raw, uf, cargo) {
+  const carg = raw.carg?.[0] || {};
+  const c = [];
+  for (const agr of carg.agr || []) for (const par of agr.par || []) for (const k of par.cand || []) {
+    const st = String(k.st || '');
+    c.push({
+      num: k.n, nc: titulo(k.nmu || k.nm), p: par.sg, cl: Number(k.seq) || 999,
+      vp: k.pvapn || k.pvap, v: k.vap, dv: k.dvt,
+      e: k.e === 's' || (/eleit/i.test(st) && !/n[ãa]o eleit/i.test(st)) ? 'E' : false, s: /turno/i.test(st), mat: /matem/i.test(st),
+      i: fotosDe(cargo, uf, k.n, k.sqcand),
+    });
+  }
+  const v = raw.v || {}, e = raw.e || {}, s = raw.s || {};
+  return {
+    date: raw.dt || raw.dg, time: raw.ht || raw.hg,
+    ua: s.pstn ?? s.pst ?? 0, st: num(s.st), ts: num(s.ts),
+    tvv: v.vv, b: v.vb, bp: v.pvbn ?? v.pvb, n: v.tvn ?? v.vn, np: v.ptvnn ?? v.ptvn,
+    a: e.a, ap: e.pan ?? e.pa, stc: carg.nv, uf, c,
+  };
+}
+function cand(c) {
+  const situ = String(c.dv || '').toLowerCase();
+  const anul = situ.includes('anulad');
+  return {
+    k: String(c.num ?? ''), num: String(c.num ?? ''),
+    nome: c.nc || '', partido: c.p || '',
+    cor: anul ? '#797E86' : corPartido(c.p),
+    vp: num(c.vp), v: Number(c.v) || 0, cl: Number(c.cl) || 999, img: c.i || [],
+    eleito: c.e === 'E', mat: !!c.mat, seg: !!c.s, sj: situ.includes('sub'), anul,
+  };
+}
+const tagDe = c => c.eleito ? (c.mat ? 'Matematicamente eleito' : 'Eleito') : c.seg ? '2º turno' : c.sj ? 'Sub judice' : c.anul ? 'Anulado' : '';
+const ordenar = arr => arr.sort((x, y) => (x.anul - y.anul) || (y.v - x.v) || (x.cl - y.cl));
+function totais(d) {
+  const tvv = Number(d.tvv) || 0, b = Number(d.b) || 0, n = Number(d.n) || 0, a = Number(d.a) || 0;
+  const comp = tvv + b + n;
+  const p = (x, src, base) => num(src) > 0 ? num(src) : base ? x / base * 100 : 0;
+  return {tvv, b, n, a, bp: p(b, d.bp, comp), np: p(n, d.np, comp), ap: p(a, d.ap, comp + a)};
+}
+function lerEstado(d, uf) {
+  const cands = ordenar((d.c || []).map(cand));
+  return {uf, nome: NOMES[uf], ua: d.ua, st: d.st, ts: d.ts, date: d.date, time: d.time, cands};
+}
+
+/* rede */
+class NaoAchou extends Error {}
+let rotaOk = 0;
+async function getJSON(p, signal) {
+  const ordem = [rotaOk, ...ROTAS.keys()].filter((v, i, a) => a.indexOf(v) === i);
+  let erro = new Error('sem rota');
+  for (const i of ordem) {
+    let r;
+    try { r = await fetch(ROTAS[i](p), {cache: 'no-store', signal}); }
+    catch (e) { if (e.name === 'AbortError') throw e; erro = e; continue; }
+    if (r.status === 404 || r.status === 403) { rotaOk = i; throw new NaoAchou('arquivo ainda não publicado'); }
+    if (!r.ok) { erro = new Error('HTTP ' + r.status); continue; }
+    try { const d = await r.json(); rotaOk = i; return d; }
+    catch { erro = new Error('resposta inválida'); }
+  }
+  throw erro;
+}
+const lerU = async (cargo, uf, signal) => deTSE(await getJSON(arqU(cargo, uf), signal), uf, cargo);
+
+async function descobrir() {
+  try {
+    const cfg = await getJSON('comum/config/ele-c.json');
+    for (const pl of cfg.pl || []) {
+      if (pl.c !== CICLO) continue;
+      for (const e of pl.e || []) {
+        if (String(e.t) !== '1') continue;
+        const cd = TURNO === 2 ? e.cdt2 : e.cd;
+        const cargos = (e.abr || []).flatMap(a => (a.cp || []).map(c => String(c.cd)));
+        if (!cd) continue;
+        if (cargos.includes('1')) ELEICAO.federal = String(cd);
+        if (cargos.includes('3')) ELEICAO.estadual = String(cd);
+      }
+    }
+  } catch (e) { console.warn('ele-c.json indisponível, usando códigos fixos', e); }
+}
+
+/* fotos */
+function foto(box, srcs) {
+  if (!srcs?.length) return;
+  const tentar = k => {
+    if (k >= srcs.length) return;
+    const img = new Image();
+    img.alt = ''; img.decoding = 'async';
+    img.onload = () => { box.appendChild(img); box.classList.add('tem-foto'); if (/\.jpe?g$/i.test(srcs[k])) box.classList.add('tse'); };
+    img.onerror = () => tentar(k + 1);
+    img.src = srcs[k];
+  };
+  tentar(0);
+}
+window.fotoErro = img => {
+  const alt = (img.dataset.alt || '').split('|').filter(Boolean);
+  if (alt.length) { img.dataset.alt = alt.slice(1).join('|'); img.src = alt[0]; } else img.remove();
+};
+
+function rolar(el, para, fmt) {
+  const de = el._v ?? para;
+  el._v = para;
+  if (reduz || de === para) { el.textContent = fmt(para); return; }
+  const t0 = performance.now();
+  const passo = t => {
+    const k = Math.min(1, (t - t0) / 700), e = 1 - (1 - k) ** 3;
+    el.textContent = fmt(de + (para - de) * e);
+    if (k < 1) requestAnimationFrame(passo);
+  };
+  requestAnimationFrame(passo);
+}
+
+/* blocos de HTML */
+const HTML_APUR = `<section class="apur"><div class="big num-t" id="ua">0,00%</div>
+  <div><p class="rot"><span>das urnas apuradas</span><span class="num-t" id="apurExtra"></span></p><div class="trilho"><i id="uaBar"></i></div></div></section>`;
+const HTML_DUELO = `<section class="duelo"><article class="lado a" id="ladoA"></article><article class="lado b" id="ladoB"></article></section>
+  <div id="caboBox"><div class="cabo" id="cabo"><i class="ca"></i><i class="cb"></i><b class="meio"></b></div>
+  <div class="cabo-rot num-t"><span id="caboA"></span><span>50%</span><span id="caboB"></span></div></div>
+  <div class="leitura"><p id="margem"></p><span class="chip" id="chip"></span></div>`;
+const HTML_TOT = `<dl class="tot">
+  <div><dt>Votos válidos</dt><dd class="num-t" id="tTvv">0</dd></div>
+  <div><dt>Brancos</dt><dd class="num-t" id="tB">0</dd></div>
+  <div><dt>Nulos</dt><dd class="num-t" id="tN">0</dd></div>
+  <div><dt>Abstenções</dt><dd class="num-t" id="tA">0</dd></div></dl>`;
+const HTML_EVOL = titulo => `<h2 class="sec">${titulo}</h2><div class="graf-box">
+  <svg class="graf" id="graf" viewBox="0 0 800 280" role="img" aria-label="${titulo}"></svg>
+  <p class="graf-vazio" id="grafVazio">A linha aparece a partir da segunda leitura com novas urnas. Deixe a página aberta.</p></div>`;
+
+function topo(loc, cargo) {
+  const l = loc.toLowerCase();
+  const abas = `<nav class="abas" aria-label="Cargos">${cargosAtivos().map(k =>
+    `<a class="aba" href="#/${l}${k === 'presidente' ? '' : '/' + k}"${k === cargo ? ' aria-current="page"' : ''}>${esc(nomeCargo(k, loc))}</a>`).join('')}</nav>`;
+  return `<div class="vista-top"><a class="voltar" href="#/">Voltar</a>${cargosAtivos().length > 1 ? abas : ''}</div>`;
+}
+
+function pintarApur(ua, extra) {
+  rolar($('ua'), num(ua), v => pct(v));
+  $('uaBar').style.width = Math.min(100, num(ua)) + '%';
+  $('apurExtra').textContent = extra || '';
+}
+function pintarTotais(d) {
+  const t = totais(d);
+  $('tTvv').textContent = nf.format(t.tvv);
+  $('tB').innerHTML = `${nf.format(t.b)}<small>${pct(t.bp)}</small>`;
+  $('tN').innerHTML = `${nf.format(t.n)}<small>${pct(t.np)}</small>`;
+  $('tA').innerHTML = `${nf.format(t.a)}<small>${pct(t.ap)}</small>`;
+}
+
+/* lado (duelo e pódio) */
+function variacao(c, ant) {
+  const a = ant?.get(c.k);
+  if (!a) return '';
+  const d = c.vp - a.vp, dv = c.v - a.v, partes = [];
+  if (dv > 0) partes.push('+' + nf.format(dv) + ' votos');
+  if (Math.abs(d) >= .01) partes.push((d > 0 ? '▲ ' : '▼ ') + pp(d));
+  return partes.join('  ');
+}
+function pintarLado(el, c, ant, pos) {
+  if (!c) { el.hidden = true; return; }
+  el.hidden = false;
+  if (el.dataset.k !== c.k) {
+    el.innerHTML = `<div class="retrato"><span class="ini"></span></div>
+      <div class="dados"><div class="topo"><span class="pos"></span><span class="num"></span><span class="tag" hidden></span></div>
+      <h2 class="nome"></h2><p class="partido"></p><p class="pct num-t"></p><p class="votos num-t"></p><p class="var num-t"></p></div>`;
+    el.dataset.k = c.k;
+    el.querySelector('.ini').textContent = iniciais(c.nome);
+    foto(el.querySelector('.retrato'), c.img);
+  }
+  const q = s => el.querySelector(s);
+  el.style.setProperty('--c', c.cor);
+  el.style.setProperty('--t', textoSobre(c.cor));
+  q('.pos').textContent = pos ? pos + 'º' : '';
+  q('.num').textContent = c.num; q('.num').hidden = !c.num;
+  q('.nome').textContent = c.nome;
+  q('.partido').textContent = c.partido;
+  rolar(q('.pct'), c.vp, v => pct(v));
+  q('.votos').textContent = nf.format(c.v) + ' votos';
+  q('.var').textContent = variacao(c, ant);
+  const t = tagDe(c);
+  q('.tag').textContent = t; q('.tag').hidden = !t;
+}
+
+function pintarDuelo(cs, ant, sen, vagas) {
+  const [a, b] = cs;
+  pintarLado($('ladoA'), a, ant);
+  pintarLado($('ladoB'), b, ant);
+  $('caboBox').hidden = sen;
+  const cabo = $('cabo');
+  cabo.style.setProperty('--ca', a?.cor || '#888');
+  cabo.style.setProperty('--cb', b?.cor || '#888');
+  cabo.querySelector('.ca').style.width = Math.min(100, a?.vp || 0) + '%';
+  cabo.querySelector('.cb').style.width = Math.min(100, b?.vp || 0) + '%';
+  $('caboA').textContent = a ? `${curto(a.nome)} ${pct(a.vp)}` : '';
+  $('caboB').textContent = b ? `${curto(b.nome)} ${pct(b.vp)}` : '';
+  const chip = $('chip'), margem = $('margem');
+  chip.className = 'chip';
+  if (sen) {
+    const x = cs[vagas - 1], y = cs[vagas];
+    margem.textContent = x && y ? `${x.nome} (${vagas}º) tem ${nf.format(x.v - y.v)} votos a mais que ${y.nome} (${vagas + 1}º) na briga pela ${vagas}ª vaga` : '';
+    chip.textContent = vagas > 1 ? `${vagas} vagas: os ${vagas} mais votados se elegem` : '1 vaga: o mais votado se elege';
+    return;
+  }
+  const [lid, out] = a && b && b.v > a.v ? [b, a] : [a, b];
+  margem.textContent = lid && out ? (lid.v === out.v ? 'Empate em votos' : `${lid.nome} à frente por ${nf.format(lid.v - out.v)} votos (${pp(lid.vp - out.vp)})`) : '';
+  const el = [a, b].find(c => c?.eleito);
+  if (el) { chip.textContent = `${el.nome} ${el.mat ? 'matematicamente eleito' : 'eleito'}`; chip.className = 'chip maioria'; return; }
+  if (TURNO === 2) { const falta = 100 - num($('ua')?._v ?? 0); chip.textContent = falta > 0.005 ? `Faltam ${pct(falta)} das urnas` : 'Todas as urnas apuradas'; return; }
+  if (a?.seg && b?.seg) chip.textContent = '2º turno confirmado';
+  else if (a && a.vp > 50) { chip.textContent = `${curto(a.nome)} acima de 50% dos válidos`; chip.className = 'chip maioria'; }
+  else chip.textContent = 'Ninguém acima de 50%: cenário de 2º turno';
+}
+
+function pintarLista(ol, resto, linhas, aoVer) {
+  const vivos = new Set(resto.map(c => c.k));
+  for (const [k, el] of linhas) if (!vivos.has(k)) { el.remove(); linhas.delete(k); }
+  for (const c of resto) {
+    let el = linhas.get(c.k);
+    if (!el) {
+      el = document.createElement('li');
+      el.className = 'cand';
+      el.innerHTML = `<div class="foto"><span class="ini"></span></div>
+        <div><div class="topo"><span class="num"></span><span class="nome"></span><span class="tag" hidden></span></div>
+        <div class="partido"></div><div class="barra"><i></i></div></div>
+        <div class="placar"><div class="pct num-t"></div><div class="votos num-t"></div>${aoVer ? '<button class="ver" type="button">ver no mapa</button>' : ''}</div>`;
+      el.querySelector('.ini').textContent = iniciais(c.nome);
+      foto(el.querySelector('.foto'), c.img);
+      if (aoVer) el.querySelector('.ver').addEventListener('click', () => aoVer(c.k));
+      linhas.set(c.k, el);
+    }
+    const q = s => el.querySelector(s);
+    el.style.setProperty('--c', c.cor);
+    q('.num').textContent = c.num; q('.num').hidden = !c.num;
+    q('.nome').textContent = c.nome;
+    q('.partido').textContent = c.partido;
+    q('.pct').textContent = pct(c.vp);
+    q('.votos').textContent = nf.format(c.v) + ' votos';
+    q('.barra i').style.width = Math.min(100, c.vp) + '%';
+    const t = tagDe(c);
+    q('.tag').textContent = t; q('.tag').hidden = !t;
+    ol.appendChild(el);
+  }
+}
+
+/* mapa em grade */
+const MAPA = {"w":700,"h":640,"bordas":"M8.5,204.4L24.7,211.7L31.6,213.2L34,213.9L49.1,217.4L57.1,219.1L70.3,226.3L79.5,231L87.9,234.7L107.5,243.1L110.1,244.2M537.5,252.9L537,251.8L535.1,251.7L535.1,250.5L531.3,248.6L529.6,246.7L529.4,245.6L528.3,245.5L526.8,244.3L522.4,242.1L520.7,241.9L519.5,240.8L517.9,240.5L516.4,239.3L514.8,238.8L512.6,237.7L511.5,236.1L513.5,233.9L515.1,233.5L518.2,229.4L519.9,231.7L521.3,230.8L522.3,231.8L524.5,232.7L525.7,234.6L527.3,234.8L529.6,236.9L530.4,235.4L533.3,235.3L534.6,236.3L536.2,234.9L539.2,233.8L539.3,232.9L541.4,231.8L541.3,230.8L544.4,229.4L546,229.2L546.7,230.2L550.6,228.7L550.8,229.1L555.1,230.2M156,72.3L157.3,73.1L159.3,72.9L161,75.1L163.7,75.1L165.5,76.2L165.2,79.4L164.1,81.1L166.7,83.7L168.1,88.3L169.1,89.8L168.6,91.3L169,92.5L168,93.6L168.1,97.3L168.8,98.9L169.6,102.5L170.5,103.2L170.9,105L172,106.1L171.9,107.4L172.8,108.3L170.9,111.4L171.4,112.6L169.7,113.9L168.6,113.2L168.2,114.3L169.8,115.2L171.8,117.4L173.7,118.3L175.2,119.7L176.9,123.3L178.3,123.1L181,124.1L182.9,125.9L181.4,122.7L181,121.2L181.9,118.8L181.4,116.5L182,114.3L183.1,112.9L186.4,111.5L186.4,110.7L188.3,110.7L192.4,113.5L193.1,115.8L194.3,116.3L196.2,116L196.7,114.8L199.3,113.9L199.3,112.7L198.1,110.8L198.8,109.8L199.4,107.3L200.6,105.5L203.2,99.9L219.3,99.9L219.3,103.8L219.8,104.7L219.7,108.5L221.5,109.5L221.7,112.5L224.1,115L225.9,116.2L225.9,118.1L227.4,119.8L228.4,119.6L229.7,121L231.8,119.2L232.5,120.7L232,122.4L235.1,124.9L236.1,124.9L236.6,126.1L237.5,126L240.3,127.3L241.2,128.1L242.7,127.7L244.8,128.7L245.6,130.6L248.1,132.1L250.1,132.6L249.4,134.2L251.6,134.9L252.8,133.9L254.4,134.4L257.1,132.7L258.9,132.3L257.2,134.7L254.9,135.7L253.7,138L254.6,138.4L247.7,153.1L245.9,157.4L238.4,173.3L228.3,195.3L226,197.4L225.2,199.7L225.9,201.5L229.4,205.4L230.1,207.9L229,209.4L229.2,211.7L227.8,213.8L226.6,214.8L228,218.3L227.5,221.8L226.1,224.1L226.5,225.6L225.8,227.2L227.4,227.3L224.9,228.6L197.9,228.5L181.3,228.5L180.7,227.4L179.1,227L177.9,227.6L177.4,229.3L175.6,229.6L175,228.5L173.7,228.6L172.8,225.5L170.7,225.8L170.3,222.8L168.9,222L168.1,222.6L167.5,221.2L166.3,220.5L165.7,218.4L163.2,216.8L152.5,216.7L152.5,217.5L150.7,220.1L150.1,221.9L149,221.2L148,221.8L147.5,223.9L148.2,225.1L146.7,227L145.1,227.7L145.2,230.6L142.8,231.3L142.8,230.5L138.5,231.6L135.9,231.2L134.9,231.6L133.9,233.2L134.2,234.5L132.3,237.2L131,237.8L129.5,235.1L127.5,236.3L126.8,235.9L126.9,238L124.6,237.3L123.4,237.9L122.8,239.4L121.4,239L119.3,237.3L116.4,237.6L113.1,237.2L113.3,238.6L111.8,240.5L110.3,240.9L107.5,243.1M343.8,93.7L340.2,94.2L339,95.1L336.9,99.8L334,102L331.3,103L330.1,104.7L327.9,105.3L326.1,107.8L324.5,110.9L322.6,112.8L321.3,114.9L321.3,118.2L319.5,120L316,120.4L315.1,119.8L312.1,119.4L310.9,118.5L310.4,115.3L309.2,115.7L309.8,113.7L309.3,111.7L307.8,111.9L307,110.6L307.2,108L303.6,105.6L303,103.3L300.2,98.2L300.6,95.1L301.2,93.9L296.9,90.5L296.2,87.5L296.7,86L295.3,86.5L294.3,84.4L290,83L287.3,82.5L286.7,80.6L283.2,78.7L281.6,78.9L280.1,78.4L278,78.5L277.1,74.8L277.8,72.5L276.2,69.2M514.8,238.8L514.2,241.7L515.3,243.1L515.3,245.2L517.2,245.7L518.5,250.5L516.8,251.9L517.5,253L517.5,255.7L514.8,256.7L514,255.9L511.8,255.9L511.6,258.9L513.2,260.3L514.1,262.7L515.1,262.9L514.8,264.3L515.3,265.9L516.9,266.5L517.5,267.5L519.4,268.3L520,267.6L521.6,268L524.1,266.5M491.2,367.6L490.9,367.2L483.4,362.1L482.8,361.3L484.1,360.2L483.4,358.5L481.6,356.7L480,356L479.2,354.2L478.1,353.4L478.8,351.8L478.4,349.8L478.8,347.4L479.8,345.8L481.9,346.3L483,345.5L481.8,344.3L482.6,341.3L484.3,341.4L485.2,339.1L487.7,337L488.6,334.5L487.2,332.7L486.5,332.9L485.3,331.3L484.3,331.4L483.3,330L480.5,330L480,329.2L478.6,330L476.7,328L475.7,328.6L474.8,327.7L472.9,327.7L472.3,328.6L470.4,329.5L467.7,329.1L467.4,325.5L461.1,319.7L458.9,320.8L456.9,320.9L456.1,319.6L454.5,320L452,319.1L452.1,318.5L449.4,317.4L447.1,315.8L445,313.9L441.6,313.1L438,314.1L436.6,315.5L435.9,314.5L431.6,313.1L431.8,311.2L433,308.5L426.6,307.1L422.1,308.5L418.5,310.9L417.8,312L415.3,313.5L414.5,314.6L412.9,314.4L410.2,317L407.8,317.4L406.3,319.4L403.5,320.5L402.1,320.4L400.6,322.1L400,321L401,320.6L402.2,317.7L401.2,316.3L401.6,315.1L401.7,309.8L403,308.7L402.2,307.7L398.9,305.7L398.7,303.8L397.9,302.8L398.4,301.4L397.8,300.5L398.3,298.6L399.4,297.6L398.3,296.7L398.3,295.3L401,293.5L400.8,292.8L397.7,294.1L397,292.7L397.8,289.2L399.9,288.5L400.1,287.8L397.4,288.3L398.2,280.9L396.4,278.7L396.1,274.9L397.1,273.9L399,273.5L399,272.9L396.4,272.6L398.1,269.1L400.5,269.4L397.3,267.9L395.9,267.9L394.3,267.1L393,264.5L395,262.9L396.1,260L397.7,258.8L398.7,255.1L400.9,254.3L406,249.5L405.6,248L407.3,247.3L408.5,249.8L410.2,252.2L409.5,253L409.8,254.9L412.3,257.6L414.8,257.8L416.8,259.1L418.8,257.4L420.5,256.7L421.6,254.8L423.2,254.9L425.2,253.6L426.2,254.7L427.6,255L428.9,254.1L429.6,251.7L431.1,251.8L433.1,248.3L433.4,246.8L434.3,246.8L434.7,245.6L434.1,244.5L434.9,243.4L433,242.3L432.1,239.2L433.5,237.6L437.6,235.1L440.1,237.4L442.4,236.7L444.3,237.1L444.9,238.8L446.5,239.4L446.7,240.3L450,238.5L451.3,238.5L453.7,236L455.1,235.5L460.5,234.9L462,232.8L462.2,231.6L464.7,230.8L465.5,229.2L467.3,227.2L468.4,227.6L470.8,227.2L472.1,229.2L473.5,229L475.2,232.8L477.1,233.7L476.9,235.1L475.6,237.9L477.7,238.3L480.4,236.6L481.5,236.8L482.2,235.3L482.7,232.6L484.7,233L487.1,232.1L488.3,230.4L488.1,228.9L491.1,228.3L490.9,226.6L492.1,226.5L495.3,224.7L496.6,225.1L497.4,227.2L500.2,227.6L501.5,228.6L503.5,228.4L504.8,229.4L505.8,231.2L506.7,229L508.2,229.5L507.5,230.7L509,231.9L510.3,231.3L510.3,233.4L511.5,236.1M525.4,172L519.9,173.4L517.8,177.4L516.2,181.5L513.7,183.9L514.2,184.8L512.5,187.8L510.5,189.8L508.5,189.8L506.6,192.6L506.8,193.7L507.3,194.2L506.2,195.9L505.3,198.5L506.1,199.7L504,201.6L504,202.7L505.5,204.2L505.1,205.5L506.9,206.2L507.3,207L505.6,210.9L504.7,211.7L503.2,213L501.5,213.7L501.2,214.9L499.9,214.5L497.7,212.7L496.3,212.3L496.7,211.5L495.1,209.6L493.9,209.2L491.3,207.3L487.7,207.7L487.1,208.4L483.1,209L482,208.2L478.8,208.4L479.6,204.5L480.5,203.3L480.4,200.2L479.8,199L476.5,198.2L475.4,196.1L475.4,192.9L474.5,191.8L474.6,190.5L473.8,188.9L474.2,188.2L473.3,184L473.4,176.8L470.5,175.1L469.3,173.5L468.9,170.9L469.9,169.7L469.1,168.9L470.7,164.7L471.1,162.6L470.7,160.7L469.1,160.6L469.3,159.4L468.1,157.7L468.8,156L467.6,155.7L467.2,154.2L467.5,152L466.4,151.3L468.8,147.3L467.8,144.9M473,412L471.2,410.8L468.5,411.1L467.1,410.4L464.4,410.2L462,409L462.3,407.3L461.9,404.7L460,403.9L460.9,402.2L461,398.7L460.3,398L461.7,395.5L466.6,395.5L468,392.5L468.2,391.4L469.8,390.7L470,387.4L471.9,385.9L471.8,384.6L472.8,384.9L473.7,382L473.2,379.5L471.6,378.4L472.2,377L469.1,374.3L470.8,374.9L473.6,374.6L473.2,372.7L471.6,371.8L472.1,369.2L469.9,369L470.2,367L471.1,365.3L473.9,364L475.6,364.7L475.6,364L473.8,362.2L475.2,361.8L476.6,362.8L479.1,360.8L481.6,361.3L483.4,362.1M401.2,316.3L399.2,317.4L397.2,316.7L397.1,315.5L394.6,313.9L393.7,315.1L394.6,318.9L392.9,319.5L390.6,318.5L388.7,318.9L389.1,319.8L388.6,321.9L389.9,322.9L388.5,324.7L388.3,326.3L389.6,327.3L390.2,329.7L390,331.2L386.8,331.9L385.6,331.8L384.5,333.1L383.2,333.4L382.3,332.9L382.2,331.1L383.1,329L383.1,326.9L381.7,325.5L370.6,325.5L370.4,329.3L369.4,330.5L369.8,331.9L369.5,333.6L383.2,333.6L382.6,334.8L383,336.3L381.1,339.7L381.3,340.8L383.9,342.5L384.8,345L384.8,346.3L385.8,347.3L381.4,351.7L381.3,352.7L379.9,353.4L380.4,355.2L382.9,355.4L383.8,356.8L382.3,359.9L383.6,363.3L379.9,365.8L379.2,365.8L377.7,368L376.1,368.4L374,369.8L372.7,368.6L369.5,367.4L369,368.2L365.5,367.2L361.6,367.6L360.2,367L358.2,368.6L357.5,368.1L355.1,370.8L353.5,372L352.2,369.8L348.3,371.6L344.9,371.4L344,372.4L340.8,372.8L339.8,374.5L337.9,376.6L338.1,377.8L336.9,379.4L335.5,379.4L333.6,381.7L332.8,383.4L333.2,384.8L331.9,384.3L330.2,382.3L325,379.8L321.7,379.4L318.9,378.1L317.7,376.9L315.7,376.6L314.2,375L312,374.7L310.5,372.7L309,372.2L306.7,372.7L303.9,371.9L303.2,370.6L304.5,368.8L306.1,367.6L303.4,366.8L301.3,367L300.7,363.6L301.7,363L300.8,360L299.3,358.2L299.2,356.8L299.6,352L301.4,348.9L302.6,345.5L306.1,343.3L306.4,341.8L307.4,341.4L308.3,339.7L307.3,338.9L307.1,337.5L309.1,336.1L309.1,335.3L312.2,333.9L313.3,331.3L316.7,331.2L318.4,330.4L320.7,326.2L321.8,320.8L323.4,319.2L326.2,317.8L326.9,318.7L328.9,317.9L331.5,311.3L331,309.7L331.5,307.2L333.4,304.6L332.8,299.7L333.8,299.1L334.3,296.7L335.7,295.5L336.8,292.1L336.5,289.9L337.7,288.7L337.9,287L338.4,284.8L340.5,282L342.7,280.7L340.9,284.8L341,286.7L342.5,287.5L346,288.4L354,293L354.3,290.5L356,287.3L357.6,286L358,287.5L359.6,288.4L361.1,286.2L362.8,287.8L363.1,288.9L364.4,289.3L365.2,290.9L364.9,293.3L366.6,291L366.9,293.1L371.3,291.3L371.3,293.5L372.6,292.5L373.9,293.6L375.9,293.6L378,295.8L378.8,294.4L378.1,292.1L378.8,290.6L379.6,291.7L380.8,291.7L381.5,293.2L382.2,292.4L383.6,292.9L384.3,291.9L387.4,291.1L391.1,288.6L395.3,288.6L395.8,286.5L396.5,287.1L396.6,288.9L400.1,287.8M460.9,142.3L460.2,144.3L461.1,145.6L458.3,149.5L456.6,149.8L455.3,152.2L451.4,152.4L448.7,155.6L448.8,157.2L448,158.9L446.6,160.1L446.1,161.5L444.3,163.5L444.6,165.5L445.9,166.3L446,168.2L444.8,170L444.8,171.1L446.2,173.5L446.9,177.2L446.6,179.3L444.6,180.7L443.6,182.8L443,182.9L442.7,187.2L443.4,190L445.9,191.8L446.5,193.4L445.3,198.1L444.1,199.3L440.7,199.5L437.7,200.6L435.1,198.8L432.9,198.6L431,199.6L430.5,199.2L428.4,200.1L425.6,204.5L424.6,204.5L422,206.1L420.2,208.5L418.4,208L416.9,209.5L413.6,210.2L411,211.1L409.2,212.7L408.2,215.2L407.6,219.3L406.5,220.7L405,225.2L404,227.3L402.6,228.2L401.8,230.3L403.2,234.1L403,235.7L404.6,237.4L404.1,239.1L404.1,242.7L403.4,247.3L402.5,249.4L401.4,248.4L399.4,248.8L397.1,248.4L395.4,246.8L394.5,242.8L392.6,242L393.3,239.8L394.1,239.4L392.3,237L391,236.9L389.7,235.6L390.1,234.4L388.4,232.3L386.6,232.3L387.1,231.2L388.7,229.3L388.5,227.5L389,225.3L390.4,223.5L392.7,221.7L394,221.7L394.8,220L394.7,216.8L393.1,215.6L391.7,215.8L386.9,217.9L385.8,216L384.2,214.6L382.5,211.6L380.8,210.3L380.4,209.1L379.2,209.1L380.7,208.1L380.5,207L378.3,207.1L377,205.1L378.2,205L379.8,203L380.4,201L380.5,198.1L382.2,192.5L381.2,188.5L381.3,186.2L380.6,184.8L380.7,182.4L379.7,181L377.1,179.8L375.9,179.9L375.2,178.3L373.2,177.8L370.9,178.1L368.3,176.8L366.1,177.1L364.8,179.2L362.7,179.4L376,168.9L377.9,168.8L379.3,167.6L380.9,164.7L382.3,163.7L383,160.9L384.8,159.9L386.3,158.2L387,155.6L387,154L388.3,152.8L388.4,151.4L390.2,150.3L392.5,146L392.1,144.4L393.4,143.8L392.3,142.3L393.1,140.9L394.6,140.6L395.8,139.4L395.5,137.7L395.9,135.2L397.7,134.1L398.6,130.7L398.5,129.1L397.4,129.1L397.6,128L399.5,127.3L399.8,125.9L399.2,124.5L400.2,122.4L399.4,121.7L400.2,120.6M460,403.9L459.3,404.3L458.6,406.5L456.1,407L457.1,408L455.3,410.1L455.6,411.2L454.1,414.4L454.7,414.9L453,417.1L454.4,418.3L447.1,421.6L443.1,424.1L442.3,423.1L439.2,422.7L437.6,423.7L435.8,423.4L433.7,424.1L433.1,423.7L428,426L423.5,426.6L422.3,427.7L418.5,428.8L416.3,429.9L413.7,430.4L412,432.1L410,432.6L409.2,431.7L407.6,432.6L405.4,431.9L404.2,433.7L405.5,433.7L405,435.5L403.3,436L402.8,435.2L399.7,436.8L399.7,435.8L396.8,436.5L397,434.3L395.3,433.8L396.1,432.8L395.3,430.6L392.3,429L391.6,426.7L393.2,424.7L392,423.2L393,422.6L391.9,420.2L394.6,415.9L394.3,414.2L393.2,414.2L392.3,412.9L390.7,412.9L387.4,413.8L387.6,412.8L386.2,410.7L385.5,407.2L384.2,405.7L385.2,402.9L386.2,402.1L385.4,400.2L383.4,399.1L383.3,397.6L384.3,395.6L383.9,394.8L381.3,393.1L381,391.8L378.6,393.1L377.5,392L375.4,392.2L374.9,394.2L373.8,392.9L373.1,394.1L371.8,394.5L370.2,392.8L370.3,394.1L365.6,394.3L364.3,394.8L361.8,394.8L360.9,396.4L361.1,398.5L359.7,398.3L359.4,394.8L358.3,394.7L357.6,396.4L356.2,396.9L355,394.9L355.1,391.7L353,392.1L351.5,390.9L347.2,391.5L345,391.2L343.7,390.5L340.1,390.3L338.5,389L337,389.6L335.8,390.9L334.1,391.4L331.5,392.9L331,393.6L331,390.9L330.3,388.4L331.2,386.2L332,386.1L331.9,384.3M383.2,333.6L383.2,333.4M235.5,356L235.9,355.4L237.6,359.5L239.8,360.6L242.9,359.2L244.5,359.2L246.3,357.4L246.4,356.2L247.9,355.5L249.9,352.2L250.9,352.6L253.2,352L254,352.5L256.7,350.8L259.7,350.1L260.1,351.1L266.2,353.2L267,354.7L270.3,355.6L272.6,357.3L276.4,356.8L278,355.3L280.3,354.5L283.2,356.1L283.8,357.4L286,356.5L287.4,356.8L288,354.8L291,352.9L291.1,352L293.1,351.4L292.7,357.4L290.6,358L289.2,360.7L290.4,361.3L291.8,362.4L294,362.1L296.1,362.9L296.6,362.2L300.3,363.1L301.7,363M331,393.6L330,396.1L326,397.8L323.9,400.9L322.6,402.1L322,403.7L322.1,406.6L320.9,407L319.8,409L318.8,409.4L319,411.5L317.9,414.4L315.4,415.9L316.1,417.5L314.2,420.3L312.3,422.2L312,423.6L310,425.9L302.7,430.2L301.2,432.1L300.2,433.5L297.6,434.6L295.1,436.1L293.7,437.9L293.7,439.9L291.8,443.7L288.8,445L287.5,449.7L287.4,451.6L286.7,453.1L284.5,454.4M193.7,299.1L194.8,297.3L198.2,295.6L198.6,293.4L199.9,291.1L199.9,290.1L202.6,287.3L202.8,283.5L205.1,281.4L205.6,281.5L206.9,279.5L205.3,278.1L205.1,276.2L204,275L204,273.4L202.3,272.3L202.2,268.5L204.8,265.9L204,263.5L204.1,261.9L201.5,261.5L198.8,261.7L197.2,260L181.8,259.9L182.9,257.2L182.5,255.8L183.1,251.8L181.4,249.3L181.1,248L182.4,243.7L182.1,242L182.8,240.4L181.4,238L180.7,235.1L182.1,234.9L181.7,232.7L183,230.2L181.3,228.5M230.1,207.9L231.2,208.5L233.4,212.5L234.4,216.7L237.1,220.1L236.4,222.9L237.1,224.4L237.8,227.9L240.3,228.5L240.2,229.2L243.4,230.4L245.6,232.8L245.3,234L246.2,234.7L248.7,234.9L249.6,237.2L250.8,236.7L279.9,239.1L313.2,241.5L342,243.4L340.7,246.4L339.6,247.7L339.2,250.8L338.4,251.5L337.5,254.4L336.6,255.2L337.1,256.6L336.3,257.8L336.5,261.1L334.6,266.7L334.7,267.9L335.7,268.6L334.9,270.7L336.1,272.9L335.5,274.5L335.5,277.7L336,277.8L336.3,281.2L335.1,283.4L335.9,283.9L336.3,286.4L337.9,287M362.7,179.4L366.2,180.5L367.8,180L369.2,181.8L371.5,183L370.9,184.5L369.6,184.7L369.3,186.4L370.1,187.8L368.6,188.9L369.4,189.8L367.2,191.4L368,194L366.3,193.6L364.7,195.1L364.2,197.7L361.9,199.3L359,199.8L356.3,201.8L356.7,206.2L353.9,209.9L354.4,212.2L357.1,214.4L356.8,217.9L355.3,222.5L354.3,223.1L353.5,225.4L350.9,229.1L349.6,229.3L347.4,231.8L346.4,233.9L344.4,235.9L343.9,239.2L342,243.4M219.3,99.9L219.3,86.2M559.6,210.7L557.8,210.5L557.4,209.4L553.8,208.2L551.3,209.6L550.1,209.3L549.7,211.7L548,212.7L544.9,213.5L543.1,214.4L540,213.7L539.3,214.7L537.1,214.5L536.8,215.9L535.3,215.7L534.5,216.4L534.2,218.7L529.1,221.4L527.7,220.7L526.8,217.2L524,216.4L527,213.5L526.2,212.1L527.2,210.5L529.2,209.7L528.8,208.6L525.7,206.8L524.3,207L523.5,207.9L521.9,208.1L521.4,209.6L519,210.7L516.8,212.2L515.2,213.9L514.3,213.5L513.7,214.7L512.5,214L510.8,214.7L509.8,212.5L509,213.3L506.4,213.6L504.7,211.7M506.8,193.7L509.1,194.4L510.7,195.8L512.7,195.6L516.4,194.3L518,191.9L522.5,190.7L525.4,189L526.5,189.3L526.7,190.8L523.6,193.5L523.4,195.9L522.3,196.2L522.1,198.7L525,198.5L525.4,200.1L526.3,200.3L528.9,198.7L529.6,199.9L531.3,199L532.8,200.5L532.3,201.9L534.5,201.9L535.9,200.2L535.2,198.7L535.8,197.1L536.8,196.6L535.7,195.7L536,193.7L538.8,192.6L539.6,194.8L542,194.4L543,195.4L546.3,195.5L547.6,195L551.6,195.6L552.6,196.3L555.2,196.5L557.7,195.5M467.3,227.2L469.5,226.2L470.3,224.7L472.7,222.8L473.4,223.5L473.9,222.2L475,222.3L475.5,220.7L477.6,219.1L478.8,216.6L478.9,214.7L477.3,214L477.4,211.5L476.6,209.4L478.8,208.4M405.6,248L404.6,249.6L402.5,249.4M365,484.2L359.8,484.3L358.6,484.9L356.9,484.6L354,487L351.9,488.1L349.5,487.5L347.5,485.7L347.5,485.7L345,484.8L342.6,485.8L341.6,485L340.4,486.7L338.5,484.9L337.2,484.7L334.8,487.8L331.8,489L331,488.2L328,489.2L326.8,491.2L327.8,493.3L327.6,494.5L324.8,495.4L324,493.9L316.7,493.5L315.4,492.2L309.5,490.9L307.3,490.1L302.8,490L301.4,490.7L298.7,488.5L297.4,488.4L295.7,489.3L293.6,488.6M301.2,432.1L303.1,431.4L306.9,432.2L308.6,431.3L309.7,432.3L310.7,431.9L313.7,432.9L314.6,432.5L315.1,430.6L317.7,431.3L318.6,432.2L323.1,433.3L324.7,432.6L327.3,432.9L328.8,434.2L332.5,434.8L335.1,437.2L335.6,436.4L338,437.1L339.8,436.5L340.3,437.1L342.5,437.2L344.5,436.4L345.7,436.9L346.4,438.7L349,439.7L350.4,442.4L350.9,444.6L350.5,447.8L351.5,448.8L350.6,451.1L352,452.2L353.5,455L354.4,455.5L354.3,456.8L356.4,458.7L354.8,462L354.9,463.7L362.4,464.2L364.7,463.7L366.4,464.8L365.6,465.9L365.2,469.7L365.9,470.5L367.6,468.6L368.8,469.8L369.9,468.6L371.2,471.2L370.7,471.9L371.8,472.8L373.1,472.5L372,473.8M419.7,443.6L417.4,441.4L418.3,440.4L418.8,437.7L423.1,435.6L423.4,436.2L426.5,434.9L427.7,433L426.8,431.9L424.4,431.4L422.8,432.4L420.9,431.8L419.3,429L418.5,428.8M290.9,503.1L293.2,502.9L293.7,503.9L297.3,501.9L298.6,502.6L298.2,503.5L299.9,503.4L301.6,502L303.6,503.5L304.7,503.1L307.1,504.9L307.5,504.2L310.6,504.5L312.5,505.4L315.3,505.3L317.4,506.3L317.5,507.9L318.9,508.6L321.1,508L322.7,509.3L324.2,509.4L325,510.8L327.7,512.8L330.2,514.2L332,515.8L332.4,517.7L333.9,518.5L334.5,520.3L337.2,523L338.7,522.9L343.7,524.1L345.5,523.4L347.2,523.5L349,524.6L349.5,526.4L348.2,526.4L346,528L345.6,530.4L345.7,533.5L345.6,534.3L343.8,536L345.7,535.6L349.2,537.7","e":{"AC":{"d":"M107.5,243.1L110.1,244.2L109.9,245L106.5,246.9L104.6,249.4L102.1,250.6L100.2,250.4L98.5,252.3L96.4,253.1L94.7,255.9L93.1,255.1L90.2,255.2L86.7,260L83.7,260.8L82.9,261.7L80.5,262.2L79.9,260.1L76.3,260.2L71.9,259.2L67.9,259.3L66,259.7L65.5,259.2L63,259.1L60,260.7L57.9,261.1L56.1,260.7L54.8,259.2L53.5,260.1L53.5,243.2L54.9,241.6L53.9,240.1L55.2,238.5L55.2,237.4L53.7,237.9L51.1,240.5L50,240.9L48.2,243.1L45.8,243.9L45.2,245.3L42.8,245.7L31.5,245.7L31.9,242.9L30.2,242.1L30.5,240.8L30,239.1L28.2,238.2L23.6,237.3L16.8,237.3L18.8,234.8L19.9,234.2L20.7,232.3L18.2,227.4L15.8,225.9L15.9,223.9L14.4,223.8L14.1,223L12.3,222L11.4,220L11,217.4L9.5,216.6L9,215.3L9.9,215.3L10.2,213.9L8.2,213L6,210.9L6.9,209.5L6.2,208L9.7,207.5L9.8,206.2L8.5,204.4L24.7,211.7L31.6,213.2L34,213.9L49.1,217.4L57.1,219.1L70.3,226.3L79.5,231L87.9,234.7Z","c":[56,235.9],"p":0},"AL":{"d":"M555.1,230.2L551.6,235.7L548.1,239.5L547,241.2L545.8,241.9L542.4,246.8L539.3,249.7L537.5,252.9L537,251.8L535.1,251.7L535.1,250.5L531.3,248.6L529.6,246.7L529.4,245.6L528.3,245.5L526.8,244.3L522.4,242.1L520.7,241.9L519.5,240.8L517.9,240.5L516.4,239.3L514.8,238.8L512.6,237.7L511.5,236.1L513.5,233.9L515.1,233.5L518.2,229.4L519.9,231.7L521.3,230.8L522.3,231.8L524.5,232.7L525.7,234.6L527.3,234.8L529.6,236.9L530.4,235.4L533.3,235.3L534.6,236.3L536.2,234.9L539.2,233.8L539.3,232.9L541.4,231.8L541.3,230.8L544.4,229.4L546,229.2L546.7,230.2L550.6,228.7L550.8,229.1ZM553.1,233.5L553.1,233.5L553.1,233.5Z","c":[534.3,238.8],"p":1,"k":246},"AM":{"d":"M156,72.3L157.3,73.1L159.3,72.9L161,75.1L163.7,75.1L165.5,76.2L165.2,79.4L164.1,81.1L166.7,83.7L168.1,88.3L169.1,89.8L168.6,91.3L169,92.5L168,93.6L168.1,97.3L168.8,98.9L169.6,102.5L170.5,103.2L170.9,105L172,106.1L171.9,107.4L172.8,108.3L170.9,111.4L171.4,112.6L169.7,113.9L168.6,113.2L168.2,114.3L169.8,115.2L171.8,117.4L173.7,118.3L175.2,119.7L176.9,123.3L178.3,123.1L181,124.1L182.9,125.9L181.4,122.7L181,121.2L181.9,118.8L181.4,116.5L182,114.3L183.1,112.9L186.4,111.5L186.4,110.7L188.3,110.7L192.4,113.5L193.1,115.8L194.3,116.3L196.2,116L196.7,114.8L199.3,113.9L199.3,112.7L198.1,110.8L198.8,109.8L199.4,107.3L200.6,105.5L203.2,99.9L219.3,99.9L219.3,103.8L219.8,104.7L219.7,108.5L221.5,109.5L221.7,112.5L224.1,115L225.9,116.2L225.9,118.1L227.4,119.8L228.4,119.6L229.7,121L231.8,119.2L232.5,120.7L232,122.4L235.1,124.9L236.1,124.9L236.6,126.1L237.5,126L240.3,127.3L241.2,128.1L242.7,127.7L244.8,128.7L245.6,130.6L248.1,132.1L250.1,132.6L249.4,134.2L251.6,134.9L252.8,133.9L254.4,134.4L257.1,132.7L258.9,132.3L257.2,134.7L254.9,135.7L253.7,138L254.6,138.4L247.7,153.1L245.9,157.4L238.4,173.3L228.3,195.3L226,197.4L225.2,199.7L225.9,201.5L229.4,205.4L230.1,207.9L229,209.4L229.2,211.7L227.8,213.8L226.6,214.8L228,218.3L227.5,221.8L226.1,224.1L226.5,225.6L225.8,227.2L227.4,227.3L224.9,228.6L197.9,228.5L181.3,228.5L180.7,227.4L179.1,227L177.9,227.6L177.4,229.3L175.6,229.6L175,228.5L173.7,228.6L172.8,225.5L170.7,225.8L170.3,222.8L168.9,222L168.1,222.6L167.5,221.2L166.3,220.5L165.7,218.4L163.2,216.8L152.5,216.7L152.5,217.5L150.7,220.1L150.1,221.9L149,221.2L148,221.8L147.5,223.9L148.2,225.1L146.7,227L145.1,227.7L145.2,230.6L142.8,231.3L142.8,230.5L138.5,231.6L135.9,231.2L134.9,231.6L133.9,233.2L134.2,234.5L132.3,237.2L131,237.8L129.5,235.1L127.5,236.3L126.8,235.9L126.9,238L124.6,237.3L123.4,237.9L122.8,239.4L121.4,239L119.3,237.3L116.4,237.6L113.1,237.2L113.3,238.6L111.8,240.5L110.3,240.9L107.5,243.1L87.9,234.7L79.5,231L70.3,226.3L57.1,219.1L49.1,217.4L34,213.9L31.6,213.2L24.7,211.7L8.5,204.4L9.6,203.2L9.2,202L11.1,199.1L14.8,197.1L16.9,196.8L18.3,194.4L16.4,190.7L16.5,189L17.7,186.7L20.4,183.7L20.5,181L21.8,177.8L21.5,176.8L28.6,172.6L28.8,171.7L30.2,171.5L34.8,168.8L35.1,167.9L37.6,166.9L39.7,167.7L41.7,166.4L43.9,166.6L44.2,165.7L46.5,166L49,165.7L51.6,162.5L52.7,163L54.5,162.2L57.7,162.3L57.8,163.9L59.7,165.4L60.8,164L61.8,165.2L63.2,163.3L66.5,145.7L70.4,123.2L70.8,119.8L70.5,117.7L67.6,114.2L68.5,112.6L67.8,110.8L64.5,108.5L63.4,108.3L61.5,106.2L61.7,103.9L61.7,95.7L65,95.5L66.8,94.1L67.9,94.7L69.6,93.2L71.4,94.9L73.6,95L74.8,94.4L73.8,93L74.4,92.5L73.4,89.2L71.9,88.1L66.8,88.4L66.4,87.7L64.5,88.3L64.5,79.3L66.8,79L68.6,78.3L71,79.1L88.4,79.1L86.8,77.8L87.2,76.3L88.6,75.5L89.4,76.7L91.4,77.7L93.7,74.9L96,75L97,73.3L99.2,71.9L100.8,77.1L102.5,77.5L103.4,79.1L103.7,83.2L103.5,87.1L106.8,86.2L114.4,92.9L116.7,93.1L117.9,92.2L119.4,92.2L119.9,91L122.6,89.5L124.7,89.3L125.9,91.7L124.7,93.4L125.4,94.4L126.8,93.8L127.2,92.1L128.4,90.4L130.7,90.2L130.8,87.7L132.7,87.8L135.7,85L136.4,86.2L138.8,84.7L139.7,83.2L142.2,82.1L141.5,83.5L142.6,83.3L146.3,79.5L146.3,76.3L147.7,75.4L149.6,75.8L153.4,73.4L155.7,73.2Z","c":[137.2,163],"p":0},"AP":{"d":"M343.8,93.7L340.2,94.2L339,95.1L336.9,99.8L334,102L331.3,103L330.1,104.7L327.9,105.3L326.1,107.8L324.5,110.9L322.6,112.8L321.3,114.9L321.3,118.2L319.5,120L316,120.4L315.1,119.8L312.1,119.4L310.9,118.5L310.4,115.3L309.2,115.7L309.8,113.7L309.3,111.7L307.8,111.9L307,110.6L307.2,108L303.6,105.6L303,103.3L300.2,98.2L300.6,95.1L301.2,93.9L296.9,90.5L296.2,87.5L296.7,86L295.3,86.5L294.3,84.4L290,83L287.3,82.5L286.7,80.6L283.2,78.7L281.6,78.9L280.1,78.4L278,78.5L277.1,74.8L277.8,72.5L276.2,69.2L278.1,68.6L278.8,70.2L280.1,70.5L282.4,72.3L285.9,72.8L289.4,71.9L291.9,69.9L292.1,70.9L296,71.7L297.9,70.3L299.5,71.6L299,72.6L301.6,72.3L302.9,73.1L304.7,71.4L307.3,70L309,68L310,64.3L312.2,60L312.1,58.7L313.6,57.6L316.9,52.3L317.9,50.1L319.6,48.7L320,47.6L321.9,46.4L323.2,41.1L324.9,41.7L327.4,44.3L328.4,46.3L328.5,47.8L329.9,48.5L329.8,55.6L330.7,58.2L330.5,59.2L331.3,62L333.9,68.2L335.2,73.4L338.7,72.4L340.1,74.1L341.8,78.1L342.7,77.9L346.2,79.5L346.9,82.7L346.4,85.3L346.6,86.7L346,89.6Z","c":[317.5,83.2],"p":1},"BA":{"d":"M511.5,236.1L512.6,237.7L514.8,238.8L514.2,241.7L515.3,243.1L515.3,245.2L517.2,245.7L518.5,250.5L516.8,251.9L517.5,253L517.5,255.7L514.8,256.7L514,255.9L511.8,255.9L511.6,258.9L513.2,260.3L514.1,262.7L515.1,262.9L514.8,264.3L515.3,265.9L516.9,266.5L517.5,267.5L519.4,268.3L520,267.6L521.6,268L524.1,266.5L521.7,270.8L520.2,274.5L514.8,282.9L509.9,288.3L508.1,289.2L506.6,289L506.9,287.9L504,290.7L501.6,292.2L501.2,293.3L502.3,295.5L501.6,297.3L502.2,298.6L501.1,298.8L500.7,300.4L501.7,302.2L500.8,306.3L500.9,307.9L499.8,312.9L500.7,318.1L500.7,321.5L501.8,328.6L502.7,330.7L500.4,336.6L500.6,338.4L499.9,339.2L498.1,349.2L497.7,350.1L497.9,356.2L498.7,357.7L496.8,360.5L494.4,361.6L491.7,365.9L491.2,367.6L490.9,367.2L483.4,362.1L482.8,361.3L484.1,360.2L483.4,358.5L481.6,356.7L480,356L479.2,354.2L478.1,353.4L478.8,351.8L478.4,349.8L478.8,347.4L479.8,345.8L481.9,346.3L483,345.5L481.8,344.3L482.6,341.3L484.3,341.4L485.2,339.1L487.7,337L488.6,334.5L487.2,332.7L486.5,332.9L485.3,331.3L484.3,331.4L483.3,330L480.5,330L480,329.2L478.6,330L476.7,328L475.7,328.6L474.8,327.7L472.9,327.7L472.3,328.6L470.4,329.5L467.7,329.1L467.4,325.5L461.1,319.7L458.9,320.8L456.9,320.9L456.1,319.6L454.5,320L452,319.1L452.1,318.5L449.4,317.4L447.1,315.8L445,313.9L441.6,313.1L438,314.1L436.6,315.5L435.9,314.5L431.6,313.1L431.8,311.2L433,308.5L426.6,307.1L422.1,308.5L418.5,310.9L417.8,312L415.3,313.5L414.5,314.6L412.9,314.4L410.2,317L407.8,317.4L406.3,319.4L403.5,320.5L402.1,320.4L400.6,322.1L400,321L401,320.6L402.2,317.7L401.2,316.3L401.6,315.1L401.7,309.8L403,308.7L402.2,307.7L398.9,305.7L398.7,303.8L397.9,302.8L398.4,301.4L397.8,300.5L398.3,298.6L399.4,297.6L398.3,296.7L398.3,295.3L401,293.5L400.8,292.8L397.7,294.1L397,292.7L397.8,289.2L399.9,288.5L400.1,287.8L397.4,288.3L398.2,280.9L396.4,278.7L396.1,274.9L397.1,273.9L399,273.5L399,272.9L396.4,272.6L398.1,269.1L400.5,269.4L397.3,267.9L395.9,267.9L394.3,267.1L393,264.5L395,262.9L396.1,260L397.7,258.8L398.7,255.1L400.9,254.3L406,249.5L405.6,248L407.3,247.3L408.5,249.8L410.2,252.2L409.5,253L409.8,254.9L412.3,257.6L414.8,257.8L416.8,259.1L418.8,257.4L420.5,256.7L421.6,254.8L423.2,254.9L425.2,253.6L426.2,254.7L427.6,255L428.9,254.1L429.6,251.7L431.1,251.8L433.1,248.3L433.4,246.8L434.3,246.8L434.7,245.6L434.1,244.5L434.9,243.4L433,242.3L432.1,239.2L433.5,237.6L437.6,235.1L440.1,237.4L442.4,236.7L444.3,237.1L444.9,238.8L446.5,239.4L446.7,240.3L450,238.5L451.3,238.5L453.7,236L455.1,235.5L460.5,234.9L462,232.8L462.2,231.6L464.7,230.8L465.5,229.2L467.3,227.2L468.4,227.6L470.8,227.2L472.1,229.2L473.5,229L475.2,232.8L477.1,233.7L476.9,235.1L475.6,237.9L477.7,238.3L480.4,236.6L481.5,236.8L482.2,235.3L482.7,232.6L484.7,233L487.1,232.1L488.3,230.4L488.1,228.9L491.1,228.3L490.9,226.6L492.1,226.5L495.3,224.7L496.6,225.1L497.4,227.2L500.2,227.6L501.5,228.6L503.5,228.4L504.8,229.4L505.8,231.2L506.7,229L508.2,229.5L507.5,230.7L509,231.9L510.3,231.3L510.3,233.4ZM492.5,363.7L492.5,363.7L492.5,363.7Z","c":[462.2,281.8],"p":0},"CE":{"d":"M486.3,143.7L488.1,144.4L490.6,146L491.9,146.4L495.2,148.6L497.1,149.2L499.5,151.6L500.8,151.7L502,153.2L503.3,153.7L505.8,155.8L508.2,156.2L509.7,158.5L511,159.5L513.1,162.3L516.4,165.2L518.1,165.9L518.6,167.3L520.6,169.1L524.4,170.2L525.4,172L519.9,173.4L517.8,177.4L516.2,181.5L513.7,183.9L514.2,184.8L512.5,187.8L510.5,189.8L508.5,189.8L506.6,192.6L506.8,193.7L507.3,194.2L506.2,195.9L505.3,198.5L506.1,199.7L504,201.6L504,202.7L505.5,204.2L505.1,205.5L506.9,206.2L507.3,207L505.6,210.9L504.7,211.7L503.2,213L501.5,213.7L501.2,214.9L499.9,214.5L497.7,212.7L496.3,212.3L496.7,211.5L495.1,209.6L493.9,209.2L491.3,207.3L487.7,207.7L487.1,208.4L483.1,209L482,208.2L478.8,208.4L479.6,204.5L480.5,203.3L480.4,200.2L479.8,199L476.5,198.2L475.4,196.1L475.4,192.9L474.5,191.8L474.6,190.5L473.8,188.9L474.2,188.2L473.3,184L473.4,176.8L470.5,175.1L469.3,173.5L468.9,170.9L469.9,169.7L469.1,168.9L470.7,164.7L471.1,162.6L470.7,160.7L469.1,160.6L469.3,159.4L468.1,157.7L468.8,156L467.6,155.7L467.2,154.2L467.5,152L466.4,151.3L468.8,147.3L467.8,144.9L468.7,144.4L471.6,144.6L474.4,144L480.4,143.4ZM486.3,143.7L486.3,143.7L486.3,143.7Z","c":[491.9,175.7],"p":1},"ES":{"d":"M476.3,405.1L475.3,406.3L474.4,409.4L473.1,411L473,412L471.2,410.8L468.5,411.1L467.1,410.4L464.4,410.2L462,409L462.3,407.3L461.9,404.7L460,403.9L460.9,402.2L461,398.7L460.3,398L461.7,395.5L466.6,395.5L468,392.5L468.2,391.4L469.8,390.7L470,387.4L471.9,385.9L471.8,384.6L472.8,384.9L473.7,382L473.2,379.5L471.6,378.4L472.2,377L469.1,374.3L470.8,374.9L473.6,374.6L473.2,372.7L471.6,371.8L472.1,369.2L469.9,369L470.2,367L471.1,365.3L473.9,364L475.6,364.7L475.6,364L473.8,362.2L475.2,361.8L476.6,362.8L479.1,360.8L481.6,361.3L483.4,362.1L490.9,367.2L491.2,367.6L490.4,369.9L490.1,375L490.9,381.9L489.3,387.1L487.8,387.6L485.8,389.5L484.7,391.4L483.7,395.6L482.6,397.4L480.4,402L479.9,402.2L478.4,404.3ZM479.1,402.2L479.1,402.2L479.1,402.2ZM479,402.7L479,402.7L479,402.7ZM479.9,402.2L479.9,402.2L479.9,402.2ZM476.3,405.1L476.3,405.1L476.3,405.1Z","c":[477,386],"p":1,"k":378},"GO":{"d":"M400.1,287.8L399.9,288.5L397.8,289.2L397,292.7L397.7,294.1L400.8,292.8L401,293.5L398.3,295.3L398.3,296.7L399.4,297.6L398.3,298.6L397.8,300.5L398.4,301.4L397.9,302.8L398.7,303.8L398.9,305.7L402.2,307.7L403,308.7L401.7,309.8L401.6,315.1L401.2,316.3L399.2,317.4L397.2,316.7L397.1,315.5L394.6,313.9L393.7,315.1L394.6,318.9L392.9,319.5L390.6,318.5L388.7,318.9L389.1,319.8L388.6,321.9L389.9,322.9L388.5,324.7L388.3,326.3L389.6,327.3L390.2,329.7L390,331.2L386.8,331.9L385.6,331.8L384.5,333.1L383.2,333.4L382.3,332.9L382.2,331.1L383.1,329L383.1,326.9L381.7,325.5L370.6,325.5L370.4,329.3L369.4,330.5L369.8,331.9L369.5,333.6L383.2,333.6L382.6,334.8L383,336.3L381.1,339.7L381.3,340.8L383.9,342.5L384.8,345L384.8,346.3L385.8,347.3L381.4,351.7L381.3,352.7L379.9,353.4L380.4,355.2L382.9,355.4L383.8,356.8L382.3,359.9L383.6,363.3L379.9,365.8L379.2,365.8L377.7,368L376.1,368.4L374,369.8L372.7,368.6L369.5,367.4L369,368.2L365.5,367.2L361.6,367.6L360.2,367L358.2,368.6L357.5,368.1L355.1,370.8L353.5,372L352.2,369.8L348.3,371.6L344.9,371.4L344,372.4L340.8,372.8L339.8,374.5L337.9,376.6L338.1,377.8L336.9,379.4L335.5,379.4L333.6,381.7L332.8,383.4L333.2,384.8L331.9,384.3L330.2,382.3L325,379.8L321.7,379.4L318.9,378.1L317.7,376.9L315.7,376.6L314.2,375L312,374.7L310.5,372.7L309,372.2L306.7,372.7L303.9,371.9L303.2,370.6L304.5,368.8L306.1,367.6L303.4,366.8L301.3,367L300.7,363.6L301.7,363L300.8,360L299.3,358.2L299.2,356.8L299.6,352L301.4,348.9L302.6,345.5L306.1,343.3L306.4,341.8L307.4,341.4L308.3,339.7L307.3,338.9L307.1,337.5L309.1,336.1L309.1,335.3L312.2,333.9L313.3,331.3L316.7,331.2L318.4,330.4L320.7,326.2L321.8,320.8L323.4,319.2L326.2,317.8L326.9,318.7L328.9,317.9L331.5,311.3L331,309.7L331.5,307.2L333.4,304.6L332.8,299.7L333.8,299.1L334.3,296.7L335.7,295.5L336.8,292.1L336.5,289.9L337.7,288.7L337.9,287L338.4,284.8L340.5,282L342.7,280.7L340.9,284.8L341,286.7L342.5,287.5L346,288.4L354,293L354.3,290.5L356,287.3L357.6,286L358,287.5L359.6,288.4L361.1,286.2L362.8,287.8L363.1,288.9L364.4,289.3L365.2,290.9L364.9,293.3L366.6,291L366.9,293.1L371.3,291.3L371.3,293.5L372.6,292.5L373.9,293.6L375.9,293.6L378,295.8L378.8,294.4L378.1,292.1L378.8,290.6L379.6,291.7L380.8,291.7L381.5,293.2L382.2,292.4L383.6,292.9L384.3,291.9L387.4,291.1L391.1,288.6L395.3,288.6L395.8,286.5L396.5,287.1L396.6,288.9Z","c":[350.3,333.8],"p":0},"MA":{"d":"M387.1,231.2L388.7,229.3L388.5,227.5L389,225.3L390.4,223.5L392.7,221.7L394,221.7L394.8,220L394.7,216.8L393.1,215.6L391.7,215.8L386.9,217.9L385.8,216L384.2,214.6L382.5,211.6L380.8,210.3L380.4,209.1L379.2,209.1L380.7,208.1L380.5,207L378.3,207.1L377,205.1L378.2,205L379.8,203L380.4,201L380.5,198.1L382.2,192.5L381.2,188.5L381.3,186.2L380.6,184.8L380.7,182.4L379.7,181L377.1,179.8L375.9,179.9L375.2,178.3L373.2,177.8L370.9,178.1L368.3,176.8L366.1,177.1L364.8,179.2L362.7,179.4L376,168.9L377.9,168.8L379.3,167.6L380.9,164.7L382.3,163.7L383,160.9L384.8,159.9L386.3,158.2L387,155.6L387,154L388.3,152.8L388.4,151.4L390.2,150.3L392.5,146L392.1,144.4L393.4,143.8L392.3,142.3L393.1,140.9L394.6,140.6L395.8,139.4L395.5,137.7L395.9,135.2L397.7,134.1L398.6,130.7L398.5,129.1L397.4,129.1L397.6,128L399.5,127.3L399.8,125.9L399.2,124.5L400.2,122.4L399.4,121.7L400.2,120.6L402.2,118.4L402.4,121L404,118.5L403.2,121L404.7,120.1L404.3,121.4L405.5,119.7L406.2,122.6L407.2,121.7L408,122.2L407.9,122.4L408.5,123.5L409,124.5L410.7,123.3L411,122.1L411.7,123.7L410.5,124.4L411.6,124.7L411,126L412.1,126.6L414.4,123.4L414.3,123.3L414.5,124.4L414.9,124.3L414.8,124.2L417,124.7L418.5,123.8L417.2,125.5L418,126.6L420.1,125.6L420.7,127.2L418.6,127.8L420.1,128.2L419.2,129L421.5,128.3L421.3,129.5L423.1,131.1L422.9,133.9L424.4,134.9L424.9,136.7L424.1,137.7L425.4,139L428.7,137.6L428.6,138.3L430.6,138.7L430.3,140L432.4,137L435.4,135L437.2,137.1L438.7,136.5L441.5,137.2L447,139.8L447.7,139.8L450.6,141.6L452.1,141.9L456,141.7L460.9,142.3L460.2,144.3L461.1,145.6L458.3,149.5L456.6,149.8L455.3,152.2L451.4,152.4L448.7,155.6L448.8,157.2L448,158.9L446.6,160.1L446.1,161.5L444.3,163.5L444.6,165.5L445.9,166.3L446,168.2L444.8,170L444.8,171.1L446.2,173.5L446.9,177.2L446.6,179.3L444.6,180.7L443.6,182.8L443,182.9L442.7,187.2L443.4,190L445.9,191.8L446.5,193.4L445.3,198.1L444.1,199.3L440.7,199.5L437.7,200.6L435.1,198.8L432.9,198.6L431,199.6L430.5,199.2L428.4,200.1L425.6,204.5L424.6,204.5L422,206.1L420.2,208.5L418.4,208L416.9,209.5L413.6,210.2L411,211.1L409.2,212.7L408.2,215.2L407.6,219.3L406.5,220.7L405,225.2L404,227.3L402.6,228.2L401.8,230.3L403.2,234.1L403,235.7L404.6,237.4L404.1,239.1L404.1,242.7L403.4,247.3L402.5,249.4L401.4,248.4L399.4,248.8L397.1,248.4L395.4,246.8L394.5,242.8L392.6,242L393.3,239.8L394.1,239.4L392.3,237L391,236.9L389.7,235.6L390.1,234.4L388.4,232.3L386.6,232.3ZM418.5,129.1L418.5,129.1L418.5,129.1ZM421.9,130.8L421.9,130.8L421.9,130.8ZM405.3,123L405.3,123L405.3,123ZM403.3,120.3L403.3,120.3L403.3,120.3ZM404.2,122.1L404.2,122.1L404.2,122.1ZM420.2,129.3L420.2,129.3L420.2,129.3ZM410.3,127.5L410.3,127.5L410.3,127.5ZM418.6,126.6L418.6,126.6L418.6,126.6ZM414,125.4L414,125.4L414,125.4ZM404.2,121.3L404.2,121.3L404.2,121.3ZM407.7,122.5L407.7,122.5L407.7,122.5ZM404.5,122.4L404.5,122.4L404.5,122.4ZM418.2,129.4L418.2,129.4L418.2,129.4ZM410.6,123.9L410.6,123.9L410.6,123.9ZM403,121.1L403,121.1L403,121.1ZM407.4,122.5L407.4,122.5L407.4,122.5ZM410.3,125.7L410.3,125.7L410.3,125.7ZM416.2,122.6L416.2,121.8L417.8,122L416.1,123.5ZM416.9,122.5L416.9,122.5L416.9,122.5ZM417.1,122.3L417.1,122.3L417.1,122.3ZM406.2,122L406.8,122.1L406.2,122ZM406.5,121.9L406.5,121.9L406.5,121.9ZM418.6,125.2L418.6,125.2L418.6,125.2ZM419,125.2L419,125.2L419,125.2ZM406.1,120.5L406.1,120.5L406.1,120.5ZM408.2,120.5L408.2,120.5L408.2,120.5ZM421.3,128.8L421.3,128.8L421.3,128.8ZM419.7,125.7L419.7,125.7L419.7,125.7ZM404.5,119.5L404.5,119.5L404.5,119.5ZM404.6,120.4L404.6,120.4L404.6,120.4ZM407.9,122.4L408,122.2L407.9,122.4ZM414.6,123.7L414.6,123.7L414.6,123.7ZM414.5,124.4L414.9,124.3L414.5,124.4ZM415.3,123.3L415.3,123.3L415.3,123.3ZM419.4,127.5L419.4,127.5L419.4,127.5ZM406.2,122L406.2,122L406.2,122ZM423.3,133L423.3,133L423.3,133ZM423.2,133.4L423.2,133.4L423.2,133.4ZM410.2,123.3L410.2,123.3L410.2,123.3ZM414.8,124.2L414.8,124.2L414.8,124.2ZM419.8,127.1L419.8,127.1L419.8,127.1ZM423.7,132.2L423.7,132.2L423.7,132.2ZM421.2,129.2L421.2,129.2L421.2,129.2ZM414.6,123.9L414.6,123.9L414.6,123.9ZM408.5,123.5L408.5,123.5L408.5,123.5ZM415.2,122.4L415.2,122.4L415.2,122.4ZM404.7,121.2L404.7,121.2L404.7,121.2ZM415.8,123.4L415.8,123.4L415.8,123.4ZM421.3,129.5L421.3,129.5L421.3,129.5ZM407,122.3L407,122.3L407,122.3ZM418.2,125.7L418.2,125.7L418.2,125.7ZM407.9,121.4L407.9,121.4L407.9,121.4ZM447.7,139.8L447.7,139.8L447.7,139.8ZM429.8,137.5L429.8,137.5L429.8,137.5ZM421.3,128.8L421.3,128.8L421.3,128.8ZM406.8,122.1L406.8,122.1L406.8,122.1ZM406.6,122.9L406.6,122.9L406.6,122.9ZM406.8,121.2L406.8,121.2L406.8,121.2ZM429.8,137.5L429.8,137.5L429.8,137.5ZM413.9,124.4L413.9,124.4L413.9,124.4ZM419,125.8L419,125.8L419,125.8ZM417.6,122.6L417.6,122.6L417.6,122.6ZM415.3,123.3L415.3,123.3L415.3,123.3ZM413.9,124.7L413.9,124.7L413.9,124.7ZM423.5,133.8L423.5,133.8L423.5,133.8ZM404.3,121.4L404.3,121.4L404.3,121.4ZM387.1,231.2L387.1,231.2L387.1,231.2ZM414.4,123.4L414.4,123.4L414.4,123.4ZM414.3,123.3L414.3,123.3L414.3,123.3ZM407.9,121.4L407.9,121.4L407.9,121.4ZM419.3,126.1L419.3,126.1L419.3,126.1ZM405,120.4L405,120.4L405,120.4Z","c":[411.9,175.4],"p":0},"MG":{"d":"M483.4,362.1L481.6,361.3L479.1,360.8L476.6,362.8L475.2,361.8L473.8,362.2L475.6,364L475.6,364.7L473.9,364L471.1,365.3L470.2,367L469.9,369L472.1,369.2L471.6,371.8L473.2,372.7L473.6,374.6L470.8,374.9L469.1,374.3L472.2,377L471.6,378.4L473.2,379.5L473.7,382L472.8,384.9L471.8,384.6L471.9,385.9L470,387.4L469.8,390.7L468.2,391.4L468,392.5L466.6,395.5L461.7,395.5L460.3,398L461,398.7L460.9,402.2L460,403.9L459.3,404.3L458.6,406.5L456.1,407L457.1,408L455.3,410.1L455.6,411.2L454.1,414.4L454.7,414.9L453,417.1L454.4,418.3L447.1,421.6L443.1,424.1L442.3,423.1L439.2,422.7L437.6,423.7L435.8,423.4L433.7,424.1L433.1,423.7L428,426L423.5,426.6L422.3,427.7L418.5,428.8L416.3,429.9L413.7,430.4L412,432.1L410,432.6L409.2,431.7L407.6,432.6L405.4,431.9L404.2,433.7L405.5,433.7L405,435.5L403.3,436L402.8,435.2L399.7,436.8L399.7,435.8L396.8,436.5L397,434.3L395.3,433.8L396.1,432.8L395.3,430.6L392.3,429L391.6,426.7L393.2,424.7L392,423.2L393,422.6L391.9,420.2L394.6,415.9L394.3,414.2L393.2,414.2L392.3,412.9L390.7,412.9L387.4,413.8L387.6,412.8L386.2,410.7L385.5,407.2L384.2,405.7L385.2,402.9L386.2,402.1L385.4,400.2L383.4,399.1L383.3,397.6L384.3,395.6L383.9,394.8L381.3,393.1L381,391.8L378.6,393.1L377.5,392L375.4,392.2L374.9,394.2L373.8,392.9L373.1,394.1L371.8,394.5L370.2,392.8L370.3,394.1L365.6,394.3L364.3,394.8L361.8,394.8L360.9,396.4L361.1,398.5L359.7,398.3L359.4,394.8L358.3,394.7L357.6,396.4L356.2,396.9L355,394.9L355.1,391.7L353,392.1L351.5,390.9L347.2,391.5L345,391.2L343.7,390.5L340.1,390.3L338.5,389L337,389.6L335.8,390.9L334.1,391.4L331.5,392.9L331,393.6L331,390.9L330.3,388.4L331.2,386.2L332,386.1L331.9,384.3L333.2,384.8L332.8,383.4L333.6,381.7L335.5,379.4L336.9,379.4L338.1,377.8L337.9,376.6L339.8,374.5L340.8,372.8L344,372.4L344.9,371.4L348.3,371.6L352.2,369.8L353.5,372L355.1,370.8L357.5,368.1L358.2,368.6L360.2,367L361.6,367.6L365.5,367.2L369,368.2L369.5,367.4L372.7,368.6L374,369.8L376.1,368.4L377.7,368L379.2,365.8L379.9,365.8L383.6,363.3L382.3,359.9L383.8,356.8L382.9,355.4L380.4,355.2L379.9,353.4L381.3,352.7L381.4,351.7L385.8,347.3L384.8,346.3L384.8,345L383.9,342.5L381.3,340.8L381.1,339.7L383,336.3L382.6,334.8L383.2,333.6L383.2,333.4L384.5,333.1L385.6,331.8L386.8,331.9L390,331.2L390.2,329.7L389.6,327.3L388.3,326.3L388.5,324.7L389.9,322.9L388.6,321.9L389.1,319.8L388.7,318.9L390.6,318.5L392.9,319.5L394.6,318.9L393.7,315.1L394.6,313.9L397.1,315.5L397.2,316.7L399.2,317.4L401.2,316.3L402.2,317.7L401,320.6L400,321L400.6,322.1L402.1,320.4L403.5,320.5L406.3,319.4L407.8,317.4L410.2,317L412.9,314.4L414.5,314.6L415.3,313.5L417.8,312L418.5,310.9L422.1,308.5L426.6,307.1L433,308.5L431.8,311.2L431.6,313.1L435.9,314.5L436.6,315.5L438,314.1L441.6,313.1L445,313.9L447.1,315.8L449.4,317.4L452.1,318.5L452,319.1L454.5,320L456.1,319.6L456.9,320.9L458.9,320.8L461.1,319.7L467.4,325.5L467.7,329.1L470.4,329.5L472.3,328.6L472.9,327.7L474.8,327.7L475.7,328.6L476.7,328L478.6,330L480,329.2L480.5,330L483.3,330L484.3,331.4L485.3,331.3L486.5,332.9L487.2,332.7L488.6,334.5L487.7,337L485.2,339.1L484.3,341.4L482.6,341.3L481.8,344.3L483,345.5L481.9,346.3L479.8,345.8L478.8,347.4L478.4,349.8L478.8,351.8L478.1,353.4L479.2,354.2L480,356L481.6,356.7L483.4,358.5L484.1,360.2L482.8,361.3Z","c":[420.4,369.7],"p":0},"MS":{"d":"M290.4,361.3L291.8,362.4L294,362.1L296.1,362.9L296.6,362.2L300.3,363.1L301.7,363L300.7,363.6L301.3,367L303.4,366.8L306.1,367.6L304.5,368.8L303.2,370.6L303.9,371.9L306.7,372.7L309,372.2L310.5,372.7L312,374.7L314.2,375L315.7,376.6L317.7,376.9L318.9,378.1L321.7,379.4L325,379.8L330.2,382.3L331.9,384.3L332,386.1L331.2,386.2L330.3,388.4L331,390.9L331,393.6L330,396.1L326,397.8L323.9,400.9L322.6,402.1L322,403.7L322.1,406.6L320.9,407L319.8,409L318.8,409.4L319,411.5L317.9,414.4L315.4,415.9L316.1,417.5L314.2,420.3L312.3,422.2L312,423.6L310,425.9L302.7,430.2L301.2,432.1L300.2,433.5L297.6,434.6L295.1,436.1L293.7,437.9L293.7,439.9L291.8,443.7L288.8,445L287.5,449.7L287.4,451.6L286.7,453.1L284.5,454.4L282.5,452L279.1,450.5L273.6,453.2L269.7,453.3L268.2,452.1L268.2,448.9L266.9,447.7L266.5,445.3L267.3,443.7L266.6,442.9L266.8,440.3L266,440.3L265.1,436.1L265.8,433.2L263.8,430.3L263.9,428.6L262.4,426.9L257.3,426.9L255.2,425.2L254.7,423.8L253,424.3L251.2,426.4L249.7,426.2L248.4,427.3L246.2,426L242.7,426.4L237.9,425.3L237.5,424.1L234.8,424.9L232.1,424L233.2,420.7L232.4,420.3L233.6,418L232.5,415.4L234.1,412.3L233.9,408.1L234.6,407.1L233.1,405.7L234,405.1L233.3,402.5L232.2,402.9L231.8,401.6L232.1,399.2L230.6,397.2L230.7,396.3L229.6,394.9L234,391.9L230.1,388.7L235.1,377.8L236.1,377.8L236,375.8L235.3,375.8L238.3,366L239.7,365.9L238,364.4L236,359.9L236.5,359.9L235.1,357.1L235.5,356L235.9,355.4L237.6,359.5L239.8,360.6L242.9,359.2L244.5,359.2L246.3,357.4L246.4,356.2L247.9,355.5L249.9,352.2L250.9,352.6L253.2,352L254,352.5L256.7,350.8L259.7,350.1L260.1,351.1L266.2,353.2L267,354.7L270.3,355.6L272.6,357.3L276.4,356.8L278,355.3L280.3,354.5L283.2,356.1L283.8,357.4L286,356.5L287.4,356.8L288,354.8L291,352.9L291.1,352L293.1,351.4L292.7,357.4L290.6,358L289.2,360.7ZM290.4,361.3L290.4,361.3L290.4,361.3Z","c":[276.6,397.6],"p":0},"MT":{"d":"M198.6,293.4L199.9,291.1L199.9,290.1L202.6,287.3L202.8,283.5L205.1,281.4L205.6,281.5L206.9,279.5L205.3,278.1L205.1,276.2L204,275L204,273.4L202.3,272.3L202.2,268.5L204.8,265.9L204,263.5L204.1,261.9L201.5,261.5L198.8,261.7L197.2,260L181.8,259.9L182.9,257.2L182.5,255.8L183.1,251.8L181.4,249.3L181.1,248L182.4,243.7L182.1,242L182.8,240.4L181.4,238L180.7,235.1L182.1,234.9L181.7,232.7L183,230.2L181.3,228.5L197.9,228.5L224.9,228.6L227.4,227.3L225.8,227.2L226.5,225.6L226.1,224.1L227.5,221.8L228,218.3L226.6,214.8L227.8,213.8L229.2,211.7L229,209.4L230.1,207.9L231.2,208.5L233.4,212.5L234.4,216.7L237.1,220.1L236.4,222.9L237.1,224.4L237.8,227.9L240.3,228.5L240.2,229.2L243.4,230.4L245.6,232.8L245.3,234L246.2,234.7L248.7,234.9L249.6,237.2L250.8,236.7L279.9,239.1L313.2,241.5L342,243.4L340.7,246.4L339.6,247.7L339.2,250.8L338.4,251.5L337.5,254.4L336.6,255.2L337.1,256.6L336.3,257.8L336.5,261.1L334.6,266.7L334.7,267.9L335.7,268.6L334.9,270.7L336.1,272.9L335.5,274.5L335.5,277.7L336,277.8L336.3,281.2L335.1,283.4L335.9,283.9L336.3,286.4L337.9,287L337.7,288.7L336.5,289.9L336.8,292.1L335.7,295.5L334.3,296.7L333.8,299.1L332.8,299.7L333.4,304.6L331.5,307.2L331,309.7L331.5,311.3L328.9,317.9L326.9,318.7L326.2,317.8L323.4,319.2L321.8,320.8L320.7,326.2L318.4,330.4L316.7,331.2L313.3,331.3L312.2,333.9L309.1,335.3L309.1,336.1L307.1,337.5L307.3,338.9L308.3,339.7L307.4,341.4L306.4,341.8L306.1,343.3L302.6,345.5L301.4,348.9L299.6,352L299.2,356.8L299.3,358.2L300.8,360L301.7,363L300.3,363.1L296.6,362.2L296.1,362.9L294,362.1L291.8,362.4L290.4,361.3L290.4,361.3L289.2,360.7L290.6,358L292.7,357.4L293.1,351.4L291.1,352L291,352.9L288,354.8L287.4,356.8L286,356.5L283.8,357.4L283.2,356.1L280.3,354.5L278,355.3L276.4,356.8L272.6,357.3L270.3,355.6L267,354.7L266.2,353.2L260.1,351.1L259.7,350.1L256.7,350.8L254,352.5L253.2,352L250.9,352.6L249.9,352.2L247.9,355.5L246.4,356.2L246.3,357.4L244.5,359.2L242.9,359.2L239.8,360.6L237.6,359.5L235.9,355.4L235.5,356L233.7,354.3L232.3,355.2L228.5,352.8L226.4,350.3L225.3,346.3L225.5,342.5L227.1,340.5L227.7,338.3L227.5,336.7L225.9,337.6L211.2,337L201.3,336.8L200.4,325.1L195.7,319.8L200.3,319.6L199.9,312.6L197.3,308.1L197,305L198.2,303.3L197.4,302.7L197.1,300.6L193.7,299.1L194.8,297.3L198.2,295.6ZM198.6,293.4L198.6,293.4L198.6,293.4Z","c":[261.6,288.8],"p":0},"PA":{"d":"M388.2,114L388.5,116L389.5,114.1L389.6,115.6L392.5,114.7L393.1,115.6L392.5,117.3L394,117.2L394.5,116.1L395.2,118L397.2,117.9L398.8,116.1L398.8,118.3L400.7,119.3L400.2,120.6L399.4,121.7L400.2,122.4L399.2,124.5L399.8,125.9L399.5,127.3L397.6,128L397.4,129.1L398.5,129.1L398.6,130.7L397.7,134.1L395.9,135.2L395.5,137.7L395.8,139.4L394.6,140.6L393.1,140.9L392.3,142.3L393.4,143.8L392.1,144.4L392.5,146L390.2,150.3L388.4,151.4L388.3,152.8L387,154L387,155.6L386.3,158.2L384.8,159.9L383,160.9L382.3,163.7L380.9,164.7L379.3,167.6L377.9,168.8L376,168.9L362.7,179.4L366.2,180.5L367.8,180L369.2,181.8L371.5,183L370.9,184.5L369.6,184.7L369.3,186.4L370.1,187.8L368.6,188.9L369.4,189.8L367.2,191.4L368,194L366.3,193.6L364.7,195.1L364.2,197.7L361.9,199.3L359,199.8L356.3,201.8L356.7,206.2L353.9,209.9L354.4,212.2L357.1,214.4L356.8,217.9L355.3,222.5L354.3,223.1L353.5,225.4L350.9,229.1L349.6,229.3L347.4,231.8L346.4,233.9L344.4,235.9L343.9,239.2L342,243.4L313.2,241.5L279.9,239.1L250.8,236.7L249.6,237.2L248.7,234.9L246.2,234.7L245.3,234L245.6,232.8L243.4,230.4L240.2,229.2L240.3,228.5L237.8,227.9L237.1,224.4L236.4,222.9L237.1,220.1L234.4,216.7L233.4,212.5L231.2,208.5L230.1,207.9L229.4,205.4L225.9,201.5L225.2,199.7L226,197.4L228.3,195.3L238.4,173.3L245.9,157.4L247.7,153.1L254.6,138.4L253.7,138L254.9,135.7L257.2,134.7L258.9,132.3L257.1,132.7L254.4,134.4L252.8,133.9L251.6,134.9L249.4,134.2L250.1,132.6L248.1,132.1L245.6,130.6L244.8,128.7L242.7,127.7L241.2,128.1L240.3,127.3L237.5,126L236.6,126.1L236.1,124.9L235.1,124.9L232,122.4L232.5,120.7L231.8,119.2L229.7,121L228.4,119.6L227.4,119.8L225.9,118.1L225.9,116.2L224.1,115L221.7,112.5L221.5,109.5L219.7,108.5L219.8,104.7L219.3,103.8L219.3,99.9L219.3,86.2L220.3,87L221.5,86.6L222,85.4L225,85.7L225.5,84.2L224.8,82.9L226.8,82.6L227.3,81.1L229.7,81.5L230.2,82.4L231.9,82.3L232.2,80.1L234.9,79.7L237,79.8L238.9,79.2L240,76.6L241.8,75.3L242.5,76L244.6,74.9L246.1,76.6L247.3,76.3L249,77.4L250.1,76.4L252.1,76.6L253.5,76L255.2,76.1L256.8,77L258.1,76.9L260.3,77.7L261.6,76.9L260.8,74.1L259.7,72.1L258.3,71.6L259,70L260.5,69.3L261.2,67.8L263.9,69.5L267.4,69L269,69.4L269.9,68L271.1,68.2L272.7,67.3L273,67.9L275.1,67L276.2,69.2L277.8,72.5L277.1,74.8L278,78.5L280.1,78.4L281.6,78.9L283.2,78.7L286.7,80.6L287.3,82.5L290,83L294.3,84.4L295.3,86.5L296.7,86L296.2,87.5L296.9,90.5L301.2,93.9L300.6,95.1L300.2,98.2L303,103.3L303.6,105.6L307.2,108L307,110.6L307.8,111.9L309.3,111.7L309.8,113.7L309.2,115.7L310.4,115.3L310.9,118.5L312.1,119.4L315.1,119.8L316,120.4L319.5,120L321.3,118.2L321.3,114.9L322.6,112.8L324.5,110.9L326.1,107.8L327.9,105.3L330.1,104.7L331.3,103L334,102L336.9,99.8L339,95.1L340.2,94.2L343.8,93.7L344.6,95.5L344.3,98.8L346.5,99.2L349.7,98.4L352.5,102.5L354.1,103.6L359.2,105.9L360.5,106.9L363.5,107.2L364.4,106.9L367.6,107.2L367.9,108.7L366.7,110.7L373.4,113L374.9,111.4L375.9,113L376.2,111.4L377.6,111.2L378.9,113.5L379.4,111.8L380.9,114.4L380.7,112.4L383,112L386.3,113.1L387.1,114.1ZM396,117.1L396,117.1L396,117.1ZM400.6,118.7L400.6,118.7L400.6,118.7ZM387.1,113.4L387.1,113.4L387.1,113.4ZM396.4,117.7L396.4,117.7L396.4,117.7ZM375.6,113L375.6,113L375.6,113ZM395.4,117.9L395.4,117.9L395.4,117.9ZM397.1,117L397.1,117L397.1,117ZM393.1,115.4L393.1,115.4L393.1,115.4ZM393.1,115.7L393.1,115.7L393.1,115.7ZM387.1,113.8L387.1,113.8L387.1,113.8ZM395.1,117.2L395.1,117.2L395.1,117.2ZM398.8,116.9L398.8,116.9L398.8,116.9ZM388.2,114L388.2,114L388.2,114ZM387.2,113.7L387.2,113.7L387.2,113.7ZM397.9,116.8L397.9,116.8L397.9,116.8Z","c":[301.8,160.1],"p":0},"PB":{"d":"M557.7,195.5L557.8,197.7L559.1,202.6L560.2,205L559.6,210.7L557.8,210.5L557.4,209.4L553.8,208.2L551.3,209.6L550.1,209.3L549.7,211.7L548,212.7L544.9,213.5L543.1,214.4L540,213.7L539.3,214.7L537.1,214.5L536.8,215.9L535.3,215.7L534.5,216.4L534.2,218.7L529.1,221.4L527.7,220.7L526.8,217.2L524,216.4L527,213.5L526.2,212.1L527.2,210.5L529.2,209.7L528.8,208.6L525.7,206.8L524.3,207L523.5,207.9L521.9,208.1L521.4,209.6L519,210.7L516.8,212.2L515.2,213.9L514.3,213.5L513.7,214.7L512.5,214L510.8,214.7L509.8,212.5L509,213.3L506.4,213.6L504.7,211.7L505.6,210.9L507.3,207L506.9,206.2L505.1,205.5L505.5,204.2L504,202.7L504,201.6L506.1,199.7L505.3,198.5L506.2,195.9L507.3,194.2L506.8,193.7L509.1,194.4L510.7,195.8L512.7,195.6L516.4,194.3L518,191.9L522.5,190.7L525.4,189L526.5,189.3L526.7,190.8L523.6,193.5L523.4,195.9L522.3,196.2L522.1,198.7L525,198.5L525.4,200.1L526.3,200.3L528.9,198.7L529.6,199.9L531.3,199L532.8,200.5L532.3,201.9L534.5,201.9L535.9,200.2L535.2,198.7L535.8,197.1L536.8,196.6L535.7,195.7L536,193.7L538.8,192.6L539.6,194.8L542,194.4L543,195.4L546.3,195.5L547.6,195L551.6,195.6L552.6,196.3L555.2,196.5ZM559.2,202.6L559.2,202.6L559.2,202.6Z","c":[531.3,204.6],"p":1,"k":194},"PE":{"d":"M559.6,210.7L560,211.7L559.4,214.4L559.5,217.2L558.1,220.7L558.1,222.1L556,227L555.1,230.2L550.8,229.1L550.6,228.7L546.7,230.2L546,229.2L544.4,229.4L541.3,230.8L541.4,231.8L539.3,232.9L539.2,233.8L536.2,234.9L534.6,236.3L533.3,235.3L530.4,235.4L529.6,236.9L527.3,234.8L525.7,234.6L524.5,232.7L522.3,231.8L521.3,230.8L519.9,231.7L518.2,229.4L515.1,233.5L513.5,233.9L511.5,236.1L510.3,233.4L510.3,231.3L509,231.9L507.5,230.7L508.2,229.5L506.7,229L505.8,231.2L504.8,229.4L503.5,228.4L501.5,228.6L500.2,227.6L497.4,227.2L496.6,225.1L495.3,224.7L492.1,226.5L490.9,226.6L491.1,228.3L488.1,228.9L488.3,230.4L487.1,232.1L484.7,233L482.7,232.6L482.2,235.3L481.5,236.8L480.4,236.6L477.7,238.3L475.6,237.9L476.9,235.1L477.1,233.7L475.2,232.8L473.5,229L472.1,229.2L470.8,227.2L468.4,227.6L467.3,227.2L469.5,226.2L470.3,224.7L472.7,222.8L473.4,223.5L473.9,222.2L475,222.3L475.5,220.7L477.6,219.1L478.8,216.6L478.9,214.7L477.3,214L477.4,211.5L476.6,209.4L478.8,208.4L482,208.2L483.1,209L487.1,208.4L487.7,207.7L491.3,207.3L493.9,209.2L495.1,209.6L496.7,211.5L496.3,212.3L497.7,212.7L499.9,214.5L501.2,214.9L501.5,213.7L503.2,213L504.7,211.7L506.4,213.6L509,213.3L509.8,212.5L510.8,214.7L512.5,214L513.7,214.7L514.3,213.5L515.2,213.9L516.8,212.2L519,210.7L521.4,209.6L521.9,208.1L523.5,207.9L524.3,207L525.7,206.8L528.8,208.6L529.2,209.7L527.2,210.5L526.2,212.1L527,213.5L524,216.4L526.8,217.2L527.7,220.7L529.1,221.4L534.2,218.7L534.5,216.4L535.3,215.7L536.8,215.9L537.1,214.5L539.3,214.7L540,213.7L543.1,214.4L544.9,213.5L548,212.7L549.7,211.7L550.1,209.3L551.3,209.6L553.8,208.2L557.4,209.4L557.8,210.5ZM594,157.9L594,157.9L594,157.9ZM594,157.9L594,157.9L594,157.9Z","c":[514.8,221.8],"p":0,"k":220},"PI":{"d":"M467.8,144.9L468.8,147.3L466.4,151.3L467.5,152L467.2,154.2L467.6,155.7L468.8,156L468.1,157.7L469.3,159.4L469.1,160.6L470.7,160.7L471.1,162.6L470.7,164.7L469.1,168.9L469.9,169.7L468.9,170.9L469.3,173.5L470.5,175.1L473.4,176.8L473.3,184L474.2,188.2L473.8,188.9L474.6,190.5L474.5,191.8L475.4,192.9L475.4,196.1L476.5,198.2L479.8,199L480.4,200.2L480.5,203.3L479.6,204.5L478.8,208.4L476.6,209.4L477.4,211.5L477.3,214L478.9,214.7L478.8,216.6L477.6,219.1L475.5,220.7L475,222.3L473.9,222.2L473.4,223.5L472.7,222.8L470.3,224.7L469.5,226.2L467.3,227.2L465.5,229.2L464.7,230.8L462.2,231.6L462,232.8L460.5,234.9L455.1,235.5L453.7,236L451.3,238.5L450,238.5L446.7,240.3L446.5,239.4L444.9,238.8L444.3,237.1L442.4,236.7L440.1,237.4L437.6,235.1L433.5,237.6L432.1,239.2L433,242.3L434.9,243.4L434.1,244.5L434.7,245.6L434.3,246.8L433.4,246.8L433.1,248.3L431.1,251.8L429.6,251.7L428.9,254.1L427.6,255L426.2,254.7L425.2,253.6L423.2,254.9L421.6,254.8L420.5,256.7L418.8,257.4L416.8,259.1L414.8,257.8L412.3,257.6L409.8,254.9L409.5,253L410.2,252.2L408.5,249.8L407.3,247.3L405.6,248L404.6,249.6L402.5,249.4L403.4,247.3L404.1,242.7L404.1,239.1L404.6,237.4L403,235.7L403.2,234.1L401.8,230.3L402.6,228.2L404,227.3L405,225.2L406.5,220.7L407.6,219.3L408.2,215.2L409.2,212.7L411,211.1L413.6,210.2L416.9,209.5L418.4,208L420.2,208.5L422,206.1L424.6,204.5L425.6,204.5L428.4,200.1L430.5,199.2L431,199.6L432.9,198.6L435.1,198.8L437.7,200.6L440.7,199.5L444.1,199.3L445.3,198.1L446.5,193.4L445.9,191.8L443.4,190L442.7,187.2L443,182.9L443.6,182.8L444.6,180.7L446.6,179.3L446.9,177.2L446.2,173.5L444.8,171.1L444.8,170L446,168.2L445.9,166.3L444.6,165.5L444.3,163.5L446.1,161.5L446.6,160.1L448,158.9L448.8,157.2L448.7,155.6L451.4,152.4L455.3,152.2L456.6,149.8L458.3,149.5L461.1,145.6L460.2,144.3L460.9,142.3L463.4,144.4Z","c":[444.5,208.5],"p":0},"PR":{"d":"M372,473.8L368.8,478.1L367.2,479.1L365,484.2L359.8,484.3L358.6,484.9L356.9,484.6L354,487L351.9,488.1L349.5,487.5L347.5,485.7L347.5,485.7L345,484.8L342.6,485.8L341.6,485L340.4,486.7L338.5,484.9L337.2,484.7L334.8,487.8L331.8,489L331,488.2L328,489.2L326.8,491.2L327.8,493.3L327.6,494.5L324.8,495.4L324,493.9L316.7,493.5L315.4,492.2L309.5,490.9L307.3,490.1L302.8,490L301.4,490.7L298.7,488.5L297.4,488.4L295.7,489.3L293.6,488.6L292.4,485.6L291.2,484.4L290.7,482.7L291.1,481.3L289.8,478.5L286.8,477.7L287.3,476.7L283.3,478.2L282.6,479.7L280.2,478.2L279.8,476L281.5,473.6L282.5,471L282.3,468.1L284,463.6L284,460.5L284.9,458.9L283.7,455.5L284.5,454.4L286.7,453.1L287.4,451.6L287.5,449.7L288.8,445L291.8,443.7L293.7,439.9L293.7,437.9L295.1,436.1L297.6,434.6L300.2,433.5L301.2,432.1L303.1,431.4L306.9,432.2L308.6,431.3L309.7,432.3L310.7,431.9L313.7,432.9L314.6,432.5L315.1,430.6L317.7,431.3L318.6,432.2L323.1,433.3L324.7,432.6L327.3,432.9L328.8,434.2L332.5,434.8L335.1,437.2L335.6,436.4L338,437.1L339.8,436.5L340.3,437.1L342.5,437.2L344.5,436.4L345.7,436.9L346.4,438.7L349,439.7L350.4,442.4L350.9,444.6L350.5,447.8L351.5,448.8L350.6,451.1L352,452.2L353.5,455L354.4,455.5L354.3,456.8L356.4,458.7L354.8,462L354.9,463.7L362.4,464.2L364.7,463.7L366.4,464.8L365.6,465.9L365.2,469.7L365.9,470.5L367.6,468.6L368.8,469.8L369.9,468.6L371.2,471.2L370.7,471.9L371.8,472.8L373.1,472.5Z","c":[322.3,463.4],"p":0},"RJ":{"d":"M422.7,442.5L421.4,443.6L419.7,443.6L417.4,441.4L418.3,440.4L418.8,437.7L423.1,435.6L423.4,436.2L426.5,434.9L427.7,433L426.8,431.9L424.4,431.4L422.8,432.4L420.9,431.8L419.3,429L418.5,428.8L422.3,427.7L423.5,426.6L428,426L433.1,423.7L433.7,424.1L435.8,423.4L437.6,423.7L439.2,422.7L442.3,423.1L443.1,424.1L447.1,421.6L454.4,418.3L453,417.1L454.7,414.9L454.1,414.4L455.6,411.2L455.3,410.1L457.1,408L456.1,407L458.6,406.5L459.3,404.3L460,403.9L461.9,404.7L462.3,407.3L462,409L464.4,410.2L467.1,410.4L468.5,411.1L471.2,410.8L473,412L471.5,414.8L472.3,416.7L472,418.4L472.8,422.2L472.3,423L469,424.9L465.6,425.9L461.6,428.1L458.3,431.9L458.5,433.6L459.9,434.5L457.2,437.3L450,436.9L443.5,437.6L442.2,436.5L443.7,434.1L442.9,433L440.8,433.9L440,434.9L440.7,435.8L441.6,436.3L441.4,437.8L436.5,438.7L434.1,438.8L435.3,438.1L432.7,436.6L429.3,437L428.4,438.3L426.4,438.7L426.5,437.9L424.9,438.2L425.4,436.9L421.5,438.9L420.5,438.8L419.8,441L422,441.5ZM439,437.8L439,437.8L439,437.8ZM426.7,439.3L427.9,439.9L427.2,441.1L424.7,440.7ZM432.4,438.8L430.6,439.3L430.3,438.6ZM441.5,434.6L441.5,434.6L441.5,434.6ZM431.2,437L431.2,437L431.2,437ZM440.7,435.8L440.7,435.8L440.7,435.8ZM431,438.1L431,438.1L431,438.1ZM421.7,441.1L421.7,441.1L421.7,441.1ZM429.3,437.9L429.3,437.9L429.3,437.9ZM420.3,440.5L420.3,440.5L420.3,440.5ZM462.5,428.9L462.5,428.9L462.5,428.9ZM422.7,442.5L422.7,442.5L422.7,442.5ZM442.6,434.2L442.6,434.2L442.6,434.2ZM442.6,434.2L442.6,434.2L442.6,434.2ZM441.6,436.3L441.6,436.3L441.6,436.3ZM420.9,439.1L420.9,439.1L420.9,439.1ZM431.9,437.2L431.9,437.2L431.9,437.2ZM462.7,428.8L462.7,428.8L462.7,428.8ZM421.7,441.1L421.7,441.1L421.7,441.1ZM421.8,440.8L421.8,440.8L421.8,440.8ZM431.2,437.7L431.2,437.7L431.2,437.7ZM420.9,441.5L420.9,441.5L420.9,441.5ZM459.9,434.5L459.9,434.5L459.9,434.5ZM428.1,438.5L428.1,438.5L428.1,438.5ZM431.2,437L431.2,437L431.2,437ZM436.8,439L436.8,439L436.8,439ZM442,438.9L442,438.9L442,438.9ZM420.9,441.5L420.9,441.5L420.9,441.5ZM430.8,438.3L430.8,438.3L430.8,438.3ZM420.2,441.3L420.2,441.3L420.2,441.3ZM430.6,438L430.6,438L430.6,438ZM441.2,438.6L441.2,438.6L441.2,438.6ZM420.5,439.5L420.5,439.5L420.5,439.5ZM430.6,438.3L430.6,438.3L430.6,438.3ZM431.9,437.2L431.9,437.2L431.9,437.2ZM420.4,439.7L420.4,439.7L420.4,439.7Z","c":[448.9,425.7],"p":1,"k":406},"RN":{"d":"M557.7,195.5L555.2,196.5L552.6,196.3L551.6,195.6L547.6,195L546.3,195.5L543,195.4L542,194.4L539.6,194.8L538.8,192.6L536,193.7L535.7,195.7L536.8,196.6L535.8,197.1L535.2,198.7L535.9,200.2L534.5,201.9L532.3,201.9L532.8,200.5L531.3,199L529.6,199.9L528.9,198.7L526.3,200.3L525.4,200.1L525,198.5L522.1,198.7L522.3,196.2L523.4,195.9L523.6,193.5L526.7,190.8L526.5,189.3L525.4,189L522.5,190.7L518,191.9L516.4,194.3L512.7,195.6L510.7,195.8L509.1,194.4L506.8,193.7L506.6,192.6L508.5,189.8L510.5,189.8L512.5,187.8L514.2,184.8L513.7,183.9L516.2,181.5L517.8,177.4L519.9,173.4L525.4,172L526.6,173.4L530.6,173.7L533.4,175.7L536,175.3L538.7,175.9L541.3,175.7L543.8,175L550.3,176.6L551.3,177.5L553.6,181.2L554.7,186.7L555.7,188.7L555.9,191.2L556.7,192Z","c":[533.6,186.3],"p":1,"k":168},"RO":{"d":"M112.4,243.9L110.1,244.2L107.5,243.1L110.3,240.9L111.8,240.5L113.3,238.6L113.1,237.2L116.4,237.6L119.3,237.3L121.4,239L122.8,239.4L123.4,237.9L124.6,237.3L126.9,238L126.8,235.9L127.5,236.3L129.5,235.1L131,237.8L132.3,237.2L134.2,234.5L133.9,233.2L134.9,231.6L135.9,231.2L138.5,231.6L142.8,230.5L142.8,231.3L145.2,230.6L145.1,227.7L146.7,227L148.2,225.1L147.5,223.9L148,221.8L149,221.2L150.1,221.9L150.7,220.1L152.5,217.5L152.5,216.7L163.2,216.8L165.7,218.4L166.3,220.5L167.5,221.2L168.1,222.6L168.9,222L170.3,222.8L170.7,225.8L172.8,225.5L173.7,228.6L175,228.5L175.6,229.6L177.4,229.3L177.9,227.6L179.1,227L180.7,227.4L181.3,228.5L183,230.2L181.7,232.7L182.1,234.9L180.7,235.1L181.4,238L182.8,240.4L182.1,242L182.4,243.7L181.1,248L181.4,249.3L183.1,251.8L182.5,255.8L182.9,257.2L181.8,259.9L197.2,260L198.8,261.7L201.5,261.5L204.1,261.9L204,263.5L204.8,265.9L202.2,268.5L202.3,272.3L204,273.4L204,275L205.1,276.2L205.3,278.1L206.9,279.5L205.6,281.5L205.1,281.4L202.8,283.5L202.6,287.3L199.9,290.1L199.9,291.1L198.6,293.4L198.6,293.4L198.2,295.6L194.8,297.3L193.7,299.1L191.3,298L189.7,296.3L188.1,296.8L185.3,296.3L182.9,297.1L181.3,296.3L177.3,296.7L177,295.4L175.9,294.9L173.8,292.8L173.8,291.3L172.4,290.6L171.2,291.2L166.8,289.6L166.3,288.6L164.2,289L162.8,287L161.2,286.7L160,284.1L158.7,283.6L157.9,284.5L155.6,283.8L152.5,281.4L150.2,280.7L148.7,281.1L148,282.2L143.9,281.1L141.3,280.9L139.9,279.6L139.4,278L137.3,277.3L135.3,274.7L132.6,274.5L132.8,273L132,272.7L131.8,270.3L129.4,270.4L129.8,267.6L128.6,267.2L127.9,262.2L128.9,261.4L129.5,259.9L129.1,258.3L128,257.3L128.1,255.4L127.1,254.6L126.9,252.6L128.9,248.8L128.3,244.7L128.9,243.9L128,241.8L126.8,241L125.2,243.4L123.1,242.3L120.7,242.2L118.5,243L116.7,242.7L115.9,243.3ZM112.4,243.9L112.4,243.9L112.4,243.9Z","c":[163.6,259],"p":0},"RR":{"d":"M219.3,86.2L219.3,99.9L203.2,99.9L200.6,105.5L199.4,107.3L198.8,109.8L198.1,110.8L199.3,112.7L199.3,113.9L196.7,114.8L196.2,116L194.3,116.3L193.1,115.8L192.4,113.5L188.3,110.7L186.4,110.7L186.4,111.5L183.1,112.9L182,114.3L181.4,116.5L181.9,118.8L181,121.2L181.4,122.7L182.9,125.9L181,124.1L178.3,123.1L176.9,123.3L175.2,119.7L173.7,118.3L171.8,117.4L169.8,115.2L168.2,114.3L168.6,113.2L169.7,113.9L171.4,112.6L170.9,111.4L172.8,108.3L171.9,107.4L172,106.1L170.9,105L170.5,103.2L169.6,102.5L168.8,98.9L168.1,97.3L168,93.6L169,92.5L168.6,91.3L169.1,89.8L168.1,88.3L166.7,83.7L164.1,81.1L165.2,79.4L165.5,76.2L163.7,75.1L161,75.1L159.3,72.9L157.3,73.1L156,72.3L155.3,70.2L155.6,69.1L152.2,69.9L150.3,69.8L146.3,68.2L147.4,65.2L145.7,61.8L143.9,59.3L144.2,58.7L143.6,55.1L144.5,53.2L143.1,51.2L140.5,50.1L137.6,46.9L136.8,45.3L135.7,44.5L136.1,42.9L137.3,43.4L139.2,45.5L141.1,45.1L144.7,45.2L145.6,45.8L146.7,47.9L147.7,48.6L149.1,47.7L151.2,48.4L151.7,46.7L153,48.6L154.2,49.2L155.5,48.2L154.9,47.6L158.4,47.7L158.4,49.7L160.4,50.5L160.2,51.3L161.5,52.5L163.6,50.7L164.9,51.6L164.6,46.8L167.8,46.4L167.6,45.4L169.5,44.4L173.4,45.9L175.7,44.5L178,44.6L179.4,43.2L181.7,43.4L182.3,41.2L184.6,41.1L185.6,40.2L185,39.4L189.6,39.6L190.3,37.7L193.2,36.2L195.5,33.4L193.9,29.6L199.1,29.9L200.7,29L201.8,29.3L202.3,30.7L203.8,31.6L203.9,33L203.2,35.9L203.3,37.1L201.4,39.8L205.5,40.2L208.3,41.7L207.5,43L207.6,44.4L209.1,45.1L208.7,46L210.4,47.5L209.7,49.4L208.3,50.4L208.4,51.2L205.6,53.2L206.5,54L206.5,56L205.5,57.2L204.4,60L203.9,65.6L205.2,68.7L205,69.8L206.8,71.3L207.4,71.2L207.7,75L207.3,77.4L208.5,77.2L208.1,78.8L209.8,79.1L213.9,83.7L215.7,84.5L219,85Z","c":[183.9,74.1],"p":0},"RS":{"d":"M316.2,574.6L315.3,574.2L315.8,576.4L313.7,577.5L313.3,579.6L315,580.4L316,582.4L315.5,584.4L313.6,585.9L312.5,587.7L311,591.8L309.6,596.8L307.5,601.1L305.6,603.5L300.6,608.4L297.4,611L295.3,610.1L295.5,607.5L296.4,607.9L296.7,606L296.1,602.9L296.6,601L298.1,599.8L299,600.2L300.4,597.9L301,594.9L302.9,595.3L305.1,597L306.2,596.1L308.2,592L308.6,590.5L307,587L308.1,584L306,585.1L305.3,587.2L306.6,588.1L305.5,589.2L303.5,589.7L301.6,592.6L298.7,592L296.6,591.1L293.6,588.1L293.6,586.6L292.2,583L288,579.9L287,580.2L282.1,575.9L281.9,574.5L280.3,572.6L276.8,572.4L274,569.5L273.4,570.6L271.1,569.4L269.5,565.7L268.3,565.1L266.3,562.4L265.1,563L264.9,564.3L262.1,566.2L260.1,566.4L260.4,562.9L260,561.5L258.5,560.8L257.6,558.6L254.7,556.6L253.8,555L248.9,550.4L245.2,550.1L243.3,553.3L241.8,552.9L240.6,553.6L238.7,553.3L238.4,551.3L241.3,548.7L241.5,546.7L243,545L244.3,544.9L246.6,542.7L247.5,541.1L250.3,538.2L252,534.4L254.4,533.6L254.4,532.4L256.1,530.6L256,529.4L257.6,528.7L260.3,525.9L260.1,524.5L262,523.9L262.1,522.1L264.7,523L265,521.8L263.5,520.2L266.5,518.9L267.6,517.6L269.1,516.9L269,516.1L271.7,514L272.5,514.6L275.1,512.8L275.8,510.7L277.1,508.8L277.6,509.7L281,508.4L282.8,506.8L283.5,507.7L285.6,506.4L286,504.6L287.2,505.2L288.3,503.6L290.9,503.1L293.2,502.9L293.7,503.9L297.3,501.9L298.6,502.6L298.2,503.5L299.9,503.4L301.6,502L303.6,503.5L304.7,503.1L307.1,504.9L307.5,504.2L310.6,504.5L312.5,505.4L315.3,505.3L317.4,506.3L317.5,507.9L318.9,508.6L321.1,508L322.7,509.3L324.2,509.4L325,510.8L327.7,512.8L330.2,514.2L332,515.8L332.4,517.7L333.9,518.5L334.5,520.3L337.2,523L338.7,522.9L343.7,524.1L345.5,523.4L347.2,523.5L349,524.6L349.5,526.4L348.2,526.4L346,528L345.6,530.4L345.7,533.5L345.6,534.3L343.8,536L345.7,535.6L349.2,537.7L346.2,542.2L343.5,548.3L340.8,556.1L339.9,557.8L334.3,566.9L332.6,569L328.5,572.9L327.5,574.5L324.3,577.1L319.4,580.2L315.8,584L316.5,580.2L316,578.6L318.1,579.5L318.8,578.4L321.6,577.8L324.4,574.1L325.1,572.9L325.7,573.8L327.6,572.6L328.7,569.7L328.6,566.2L329.5,566.7L331.6,565.1L331.5,563.4L332.2,563.5L334.5,562.1L335.5,558.6L335.2,554.3L336.7,555.2L335.9,555.6L336.9,556.7L337.5,552.8L335.8,551.9L335.6,553.5L333.9,554.2L332.3,553.9L332,555.8L330.2,555.1L330.7,553.5L329.5,552.8L328.8,552.9L327.2,550.3L326.9,548.7L326.8,553.6L328,553.5L328.5,555L329.6,554.5L329,556.4L328.2,555.3L326.8,557.8L326.8,561L326.5,559.3L325.5,559.4L325.3,561.1L325.8,563L324,563.7L324.5,566.7L322.1,567.6L322.1,569.4L318,570.2L316.9,571.9L316.4,575.8ZM326.8,561L326.8,561L326.8,561ZM343.8,536L343.8,536L343.8,536ZM329,556.4L329,556.4L329,556.4ZM345.7,533.5L345.7,533.5L345.7,533.5ZM326.8,549.5L326.8,549.5L326.8,549.5ZM315.4,578.4L315.4,578.4L315.4,578.4ZM296.8,600.6L296.8,600.6L296.8,600.6ZM345.6,534.3L345.6,534.3L345.6,534.3ZM324.4,574.1L324.4,574.1L324.4,574.1ZM328.8,552.9L328.8,552.9L328.8,552.9ZM329.5,552.8L329.5,552.8L329.5,552.8ZM316.2,574.6L316.2,574.6L316.2,574.6ZM328.3,552.5L328.3,552.5L328.3,552.5Z","c":[298.3,544.3],"p":0},"SC":{"d":"M293.6,488.6L295.7,489.3L297.4,488.4L298.7,488.5L301.4,490.7L302.8,490L307.3,490.1L309.5,490.9L315.4,492.2L316.7,493.5L324,493.9L324.8,495.4L327.6,494.5L327.8,493.3L326.8,491.2L328,489.2L331,488.2L331.8,489L334.8,487.8L337.2,484.7L338.5,484.9L340.4,486.7L341.6,485L342.6,485.8L345,484.8L347.5,485.7L347.5,485.7L349.5,487.5L351.9,488.1L354,487L356.9,484.6L358.6,484.9L359.8,484.3L365,484.2L365.2,487.2L366.4,488L365,491L363.7,495.1L363.9,496.6L365.1,496.9L364.4,498.3L364.8,502L365.9,503.3L364.8,503.9L365.8,505.1L365.2,507.3L364.3,508.1L365.4,509.9L364.5,510.1L365.3,514.6L364.9,516.8L361.9,525.7L356.7,529.2L353.3,532.3L349.2,537.7L345.7,535.6L343.8,536L343.8,536L345.6,534.3L345.6,534.3L345.7,533.5L345.7,533.5L345.6,530.4L346,528L348.2,526.4L349.5,526.4L349,524.6L347.2,523.5L345.5,523.4L343.7,524.1L338.7,522.9L337.2,523L334.5,520.3L333.9,518.5L332.4,517.7L332,515.8L330.2,514.2L327.7,512.8L325,510.8L324.2,509.4L322.7,509.3L321.1,508L318.9,508.6L317.5,507.9L317.4,506.3L315.3,505.3L312.5,505.4L310.6,504.5L307.5,504.2L307.1,504.9L304.7,503.1L303.6,503.5L301.6,502L299.9,503.4L298.2,503.5L298.6,502.6L297.3,501.9L293.7,503.9L293.2,502.9L290.9,503.1L291.5,501.1L292.6,500.1L293.4,498.1L292.1,496.2L292.7,490.8ZM367.6,506.6L368.2,507.6L367.6,509.5L365.4,513.7L365.8,508ZM365.4,508L365.4,508L365.4,508Z","c":[338.3,504.4],"p":0},"SE":{"d":"M537.5,252.9L534.3,254.2L531,256.4L529.9,257.7L525.3,264.3L524.1,266.5L521.6,268L520,267.6L519.4,268.3L517.5,267.5L516.9,266.5L515.3,265.9L514.8,264.3L515.1,262.9L514.1,262.7L513.2,260.3L511.6,258.9L511.8,255.9L514,255.9L514.8,256.7L517.5,255.7L517.5,253L516.8,251.9L518.5,250.5L517.2,245.7L515.3,245.2L515.3,243.1L514.2,241.7L514.8,238.8L516.4,239.3L517.9,240.5L519.5,240.8L520.7,241.9L522.4,242.1L526.8,244.3L528.3,245.5L529.4,245.6L529.6,246.7L531.3,248.6L535.1,250.5L535.1,251.7L537,251.8Z","c":[522.7,254.2],"p":1,"k":272},"SP":{"d":"M372,473.8L373.1,472.5L371.8,472.8L370.7,471.9L371.2,471.2L369.9,468.6L368.8,469.8L367.6,468.6L365.9,470.5L365.2,469.7L365.6,465.9L366.4,464.8L364.7,463.7L362.4,464.2L354.9,463.7L354.8,462L356.4,458.7L354.3,456.8L354.4,455.5L353.5,455L352,452.2L350.6,451.1L351.5,448.8L350.5,447.8L350.9,444.6L350.4,442.4L349,439.7L346.4,438.7L345.7,436.9L344.5,436.4L342.5,437.2L340.3,437.1L339.8,436.5L338,437.1L335.6,436.4L335.1,437.2L332.5,434.8L328.8,434.2L327.3,432.9L324.7,432.6L323.1,433.3L318.6,432.2L317.7,431.3L315.1,430.6L314.6,432.5L313.7,432.9L310.7,431.9L309.7,432.3L308.6,431.3L306.9,432.2L303.1,431.4L301.2,432.1L302.7,430.2L310,425.9L312,423.6L312.3,422.2L314.2,420.3L316.1,417.5L315.4,415.9L317.9,414.4L319,411.5L318.8,409.4L319.8,409L320.9,407L322.1,406.6L322,403.7L322.6,402.1L323.9,400.9L326,397.8L330,396.1L331,393.6L331.5,392.9L334.1,391.4L335.8,390.9L337,389.6L338.5,389L340.1,390.3L343.7,390.5L345,391.2L347.2,391.5L351.5,390.9L353,392.1L355.1,391.7L355,394.9L356.2,396.9L357.6,396.4L358.3,394.7L359.4,394.8L359.7,398.3L361.1,398.5L360.9,396.4L361.8,394.8L364.3,394.8L365.6,394.3L370.3,394.1L370.2,392.8L371.8,394.5L373.1,394.1L373.8,392.9L374.9,394.2L375.4,392.2L377.5,392L378.6,393.1L381,391.8L381.3,393.1L383.9,394.8L384.3,395.6L383.3,397.6L383.4,399.1L385.4,400.2L386.2,402.1L385.2,402.9L384.2,405.7L385.5,407.2L386.2,410.7L387.6,412.8L387.4,413.8L390.7,412.9L392.3,412.9L393.2,414.2L394.3,414.2L394.6,415.9L391.9,420.2L393,422.6L392,423.2L393.2,424.7L391.6,426.7L392.3,429L395.3,430.6L396.1,432.8L395.3,433.8L397,434.3L396.8,436.5L399.7,435.8L399.7,436.8L402.8,435.2L403.3,436L405,435.5L405.5,433.7L404.2,433.7L405.4,431.9L407.6,432.6L409.2,431.7L410,432.6L412,432.1L413.7,430.4L416.3,429.9L418.5,428.8L419.3,429L420.9,431.8L422.8,432.4L424.4,431.4L426.8,431.9L427.7,433L426.5,434.9L423.4,436.2L423.1,435.6L418.8,437.7L418.3,440.4L417.4,441.4L419.7,443.6L418.3,443.9L417.1,443.1L414.9,445.5L413.4,445.6L412.4,447.1L411.3,446.8L409.8,448L410.1,450.6L408.7,450.9L407.9,450.1L403.1,449.7L400,450.8L399.1,453.2L397.1,453.7L397.1,452.9L393.1,454.8L390.1,456.6L387.5,458.5L387.5,459.7L384,462.3L378.8,465.7L374.7,469.7L374.2,471.6ZM411.3,452.1L409.8,452.4L409.3,451.6L411.2,449.1L412.5,449.9ZM414.7,446.2L414.7,446.2L414.7,446.2ZM413.9,450.3L413.9,450.3L413.9,450.3ZM413.5,446.7L413.5,446.7L413.5,446.7ZM415.6,449.6L415.6,449.6L415.6,449.6ZM404.8,451.3L404.8,451.3L404.8,451.3ZM411.7,447.1L411.7,447.1L411.7,447.1ZM415.6,449.6L415.6,449.6L415.6,449.6ZM405.6,450.3L405.6,450.3L405.6,450.3ZM408.4,451L408.4,451L408.4,451ZM388.9,459.4L388.9,459.4L388.9,459.4ZM388.8,459.2L388.8,459.2L388.8,459.2ZM415.4,446.4L415.4,446.4L415.4,446.4ZM417.9,444.1L417.9,444.1L417.9,444.1ZM416.6,443.9L416.6,443.9L416.6,443.9ZM387.8,459.1L387.8,459.1L387.8,459.1ZM374.6,471.5L374.6,471.5L374.6,471.5ZM412.6,450.5L412.6,450.5L412.6,450.5ZM411.3,452.1L411.3,452.1L411.3,452.1ZM405.7,450.1L405.7,450.1L405.7,450.1ZM411.9,451.1L411.9,451.1L411.9,451.1ZM411.6,452.1L411.6,452.1L411.6,452.1ZM413.6,450.8L413.6,450.8L413.6,450.8ZM406.3,450.4L406.3,450.4L406.3,450.4Z","c":[363.2,426.9],"p":0},"TO":{"d":"M387.1,231.2L386.6,232.3L388.4,232.3L390.1,234.4L389.7,235.6L391,236.9L392.3,237L394.1,239.4L393.3,239.8L392.6,242L394.5,242.8L395.4,246.8L397.1,248.4L399.4,248.8L401.4,248.4L402.5,249.4L404.6,249.6L405.6,248L406,249.5L400.9,254.3L398.7,255.1L397.7,258.8L396.1,260L395,262.9L393,264.5L394.3,267.1L395.9,267.9L397.3,267.9L400.5,269.4L398.1,269.1L396.4,272.6L399,272.9L399,273.5L397.1,273.9L396.1,274.9L396.4,278.7L398.2,280.9L397.4,288.3L400.1,287.8L396.6,288.9L396.5,287.1L395.8,286.5L395.3,288.6L391.1,288.6L387.4,291.1L384.3,291.9L383.6,292.9L382.2,292.4L381.5,293.2L380.8,291.7L379.6,291.7L378.8,290.6L378.1,292.1L378.8,294.4L378,295.8L375.9,293.6L373.9,293.6L372.6,292.5L371.3,293.5L371.3,291.3L366.9,293.1L366.6,291L364.9,293.3L365.2,290.9L364.4,289.3L363.1,288.9L362.8,287.8L361.1,286.2L359.6,288.4L358,287.5L357.6,286L356,287.3L354.3,290.5L354,293L346,288.4L342.5,287.5L341,286.7L340.9,284.8L342.7,280.7L340.5,282L338.4,284.8L337.9,287L336.3,286.4L335.9,283.9L335.1,283.4L336.3,281.2L336,277.8L335.5,277.7L335.5,274.5L336.1,272.9L334.9,270.7L335.7,268.6L334.7,267.9L334.6,266.7L336.5,261.1L336.3,257.8L337.1,256.6L336.6,255.2L337.5,254.4L338.4,251.5L339.2,250.8L339.6,247.7L340.7,246.4L342,243.4L343.9,239.2L344.4,235.9L346.4,233.9L347.4,231.8L349.6,229.3L350.9,229.1L353.5,225.4L354.3,223.1L355.3,222.5L356.8,217.9L357.1,214.4L354.4,212.2L353.9,209.9L356.7,206.2L356.3,201.8L359,199.8L361.9,199.3L364.2,197.7L364.7,195.1L366.3,193.6L368,194L367.2,191.4L369.4,189.8L368.6,188.9L370.1,187.8L369.3,186.4L369.6,184.7L370.9,184.5L371.5,183L369.2,181.8L367.8,180L366.2,180.5L362.7,179.4L364.8,179.2L366.1,177.1L368.3,176.8L370.9,178.1L373.2,177.8L375.2,178.3L375.9,179.9L377.1,179.8L379.7,181L380.7,182.4L380.6,184.8L381.3,186.2L381.2,188.5L382.2,192.5L380.5,198.1L380.4,201L379.8,203L378.2,205L377,205.1L378.3,207.1L380.5,207L380.7,208.1L379.2,209.1L380.4,209.1L380.8,210.3L382.5,211.6L384.2,214.6L385.8,216L386.9,217.9L391.7,215.8L393.1,215.6L394.7,216.8L394.8,220L394,221.7L392.7,221.7L390.4,223.5L389,225.3L388.5,227.5L388.7,229.3L387.1,231.2Z","c":[368.7,248.1],"p":0},"DF":{"d":"M383.2,333.4L383.2,333.6L369.5,333.6L369.8,331.9L369.4,330.5L370.4,329.3L370.6,325.5L381.7,325.5L383.1,326.9L383.1,329L382.2,331.1L382.3,332.9Z","c":[376.4,329.6],"p":1,"k":326}}};
+const SVGNS = 'http://www.w3.org/2000/svg';
+const mk = (tag, attrs = {}, pai) => { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); pai?.appendChild(e); return e; };
+function criarMapa(box, aoClicar) {
+  const tiles = {};
+  const svg = mk('svg', {viewBox: `0 0 ${MAPA.w} ${MAPA.h}`, class: 'msvg', role: 'group', 'aria-label': 'Mapa do Brasil por estado'});
+  const gEst = mk('g', {}, svg), gLig = mk('g', {}, svg);
+  const hl = mk('path', {class: 'hl'}, svg);
+  const gChip = mk('g', {}, svg);
+  const tip = document.createElement('div');
+  tip.className = 'mtip';
+  tip.setAttribute('aria-hidden', 'true');
+  for (const [uf, e] of Object.entries(MAPA.e)) {
+    const [cx, cy] = e.c;
+    const g = mk('g', {class: 'est' + (e.p ? ' peq' : ''), 'data-uf': uf, tabindex: 0, role: 'link'}, gEst);
+    const t = {fill: mk('path', {class: 'f', d: e.d}, g), gs: [g]};
+    if (e.k != null) {
+      const x = 614, y = e.k, c = mk('g', {class: 'chip-uf', 'data-uf': uf}, gChip);
+      mk('path', {class: 'lig', d: `M${cx},${cy} L${x},${y}`}, gLig);
+      t.rect = mk('rect', {x, y: y - 14, width: 76, height: 28, rx: 7}, c);
+      t.sg = mk('text', {class: 'sg', x: x + 21, y}, c);
+      t.pc = mk('text', {class: 'pc', x: x + 54, y}, c);
+      t.gs.push(c); t.chip = c;
+    } else {
+      t.sg = mk('text', {class: 'sg', x: cx, y: cy - 5}, g);
+      t.pc = mk('text', {class: 'pc', x: cx, y: cy + 8}, g);
+    }
+    t.sg.textContent = uf;
+    tiles[uf] = t;
+  }
+  const ufDe = ev => ev.target.closest?.('[data-uf]')?.getAttribute('data-uf');
+  let atual = null;
+  const mostrar = (uf, x, y) => {
+    if (atual !== uf) {
+      if (atual) tiles[atual].chip?.classList.remove('ativo');
+      atual = uf;
+      hl.setAttribute('d', MAPA.e[uf].d);
+      hl.classList.add('on');
+      tiles[uf].chip?.classList.add('ativo');
+      tip.innerHTML = tiles[uf].tip || `<b>${esc(NOMES[uf])}</b>sem dados`;
+    }
+    const r = box.getBoundingClientRect();
+    tip.style.left = Math.min(r.width - 80, Math.max(80, x - r.left)) + 'px';
+    tip.style.top = (y - r.top) + 'px';
+    tip.classList.add('on');
+  };
+  const esconder = () => {
+    if (atual) tiles[atual].chip?.classList.remove('ativo');
+    atual = null; hl.classList.remove('on'); tip.classList.remove('on');
+  };
+  svg.addEventListener('click', ev => { const uf = ufDe(ev); if (uf) aoClicar(uf); });
+  svg.addEventListener('keydown', ev => { const uf = ufDe(ev); if (uf && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); aoClicar(uf); } });
+  svg.addEventListener('pointermove', ev => { if (ev.pointerType === 'touch') return; const uf = ufDe(ev); uf ? mostrar(uf, ev.clientX, ev.clientY) : esconder(); });
+  svg.addEventListener('pointerleave', esconder);
+  svg.addEventListener('focusin', ev => { const uf = ufDe(ev); if (!uf) return; const r = ev.target.getBoundingClientRect(); mostrar(uf, r.left + r.width / 2, r.top + r.height / 2); });
+  svg.addEventListener('focusout', esconder);
+  box.appendChild(svg);
+  box.appendChild(tip);
+  const leg = document.createElement('div');
+  leg.className = 'legenda';
+  box.appendChild(leg);
+  return {tiles, leg};
+}
+function pintarTiles(m, porUF, alvo) {
+  let max = 0, min = 100;
+  if (alvo) for (const s of Object.values(porUF)) { const c = s.cands.find(x => x.k === alvo.k); if (c) { max = Math.max(max, c.vp); min = Math.min(min, c.vp); } }
+  for (const uf of Object.keys(m.tiles)) {
+    const t = m.tiles[uf], s = porUF[uf];
+    const c = s ? (alvo ? s.cands.find(x => x.k === alvo.k) : s.cands[0]) : null;
+    const alvos = [t.fill, t.rect].filter(Boolean);
+    if (!c) {
+      for (const p of alvos) p.style.fill = '';
+      t.sg.style.fill = ''; t.pc.style.fill = ''; t.pc.textContent = '';
+      t.gs.forEach(g => g.classList.add('vazio')); t.tip = '';
+      t.gs[0].setAttribute('aria-label', NOMES[uf]);
+      continue;
+    }
+    t.gs.forEach(g => g.classList.remove('vazio'));
+    const cor = alvo ? alvo.cor : c.cor;
+    const k = alvo ? (max > min ? (c.vp - min) / (max - min) : 1) : Math.min(1, Math.max(0, (c.vp - 30) / 40));
+    const mix = Math.round(alvo ? 18 + k * 82 : 35 + k * 65);
+    const txt = mix > 58 ? textoSobre(cor) : 'var(--ink)';
+    for (const p of alvos) p.style.fill = `color-mix(in srgb, ${cor} ${mix}%, var(--panel))`;
+    t.sg.style.fill = txt; t.pc.style.fill = txt;
+    t.pc.textContent = pct(c.vp, 1);
+    t.tip = `<b>${esc(NOMES[uf])}</b>${esc(c.nome)} <span class="num-t">${pct(c.vp)}</span>${s.ua != null ? `<br><span style="opacity:.75" class="num-t">${pct(s.ua)} apuradas</span>` : ''}`;
+    t.gs[0].setAttribute('aria-label', `${NOMES[uf]}: ${c.nome} ${pct(c.vp)}`);
+  }
+  return {min, max};
+}
+function contarLideres(porUF, porPartido) {
+  const m = new Map();
+  for (const s of Object.values(porUF)) {
+    const c = s.cands[0];
+    if (!c) continue;
+    const key = porPartido ? c.partido : c.k;
+    const r = m.get(key) || {nome: porPartido ? c.partido : curto(c.nome), cor: c.cor, n: 0};
+    r.n++; m.set(key, r);
+  }
+  return [...m.values()].sort((a, b) => b.n - a.n);
+}
+function legendaLideres(porUF, titulo, porPartido) {
+  const l = contarLideres(porUF, porPartido);
+  if (!l.length) return '<p>Mapa por estado ainda sem dados.</p>';
+  return `<p>${esc(titulo)}</p><ul>${l.map(r => `<li><span class="sw" style="--c:${esc(r.cor)}"></span>${esc(r.nome)} em ${r.n} ${r.n > 1 ? 'estados' : 'estado'}</li>`).join('')}</ul>`;
+}
+
+/* 27 estados por cargo (mapa e panorama) */
+const est = {};
+function estados(cargo) {
+  const r = est[cargo] ||= {dados: {}, em: 0, job: null, ok: false};
+  if (!r.job && Date.now() - r.em > INTERVALO_ESTADOS) {
+    r.em = Date.now();
+    const ufs = Object.keys(NOMES);
+    let i = 0;
+    const trab = async () => {
+      while (i < ufs.length) {
+        const uf = ufs[i++];
+        try { r.dados[uf] = lerEstado(await lerU(cargo, uf), uf); } catch {}
+      }
+    };
+    r.job = Promise.all(Array.from({length: 4}, trab)).then(() => { r.job = null; r.ok = true; vista?.repintar?.(); });
+  }
+  return r;
+}
+function resumoEstados(cargo) {
+  const ds = Object.values(est[cargo]?.dados || {});
+  const st = ds.reduce((a, d) => a + d.st, 0), ts = ds.reduce((a, d) => a + d.ts, 0);
+  const rec = ds.reduce((m, d) => (d.date && (!m || `${d.date} ${d.time}` > `${m.date} ${m.time}`) ? d : m), null);
+  return {ua: ts ? st / ts * 100 : 0, date: rec?.date, time: rec?.time, tvv: st, n: ds.length};
+}
+
+/* histórico e gráfico */
+function carregarHist(k) { try { return JSON.parse(localStorage.getItem(k) || '[]'); } catch { return []; } }
+function registrar(k, hist, ua, cs) {
+  const u = num(ua), ult = hist[hist.length - 1];
+  if (ult && ult.ua === u) return hist;
+  if (ult && u < ult.ua) hist = [];
+  hist.push({ua: u, v: Object.fromEntries(cs.slice(0, 6).map(c => [c.k, c.vp]))});
+  if (hist.length > 500) hist = hist.slice(-500);
+  try { localStorage.setItem(k, JSON.stringify(hist)); } catch {}
+  return hist;
+}
+function desenharGrafico(hist, top) {
+  const svg = $('graf'), vazio = $('grafVazio');
+  if (!svg) return;
+  if (hist.length < 2 || !top.length) { svg.innerHTML = ''; svg.style.display = 'none'; vazio.hidden = false; return; }
+  svg.style.display = ''; vazio.hidden = true;
+  const W = Math.round(Math.min(900, Math.max(340, svg.parentElement.clientWidth - 20))), H = W < 560 ? 220 : 280;
+  const m = {l: 40, r: W < 560 ? 112 : 150, t: 16, b: 34};
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const x0 = hist[0].ua, x1 = hist[hist.length - 1].ua;
+  const vals = hist.flatMap(h => top.map(c => h.v[c.k]).filter(v => v != null));
+  if (!vals.length) { svg.innerHTML = ''; return; }
+  let y0 = Math.max(0, Math.floor(Math.min(...vals) - 2)), y1 = Math.min(100, Math.ceil(Math.max(...vals) + 2));
+  if (y1 >= 46 && y1 < 52) y1 = 52;
+  const X = u => m.l + (x1 === x0 ? 0 : (u - x0) / (x1 - x0)) * (W - m.l - m.r);
+  const Y = v => m.t + (1 - (v - y0) / (y1 - y0 || 1)) * (H - m.t - m.b);
+  const r = y1 - y0, passo = r > 40 ? 10 : r > 16 ? 5 : r > 6 ? 2 : 1;
+  let g = '';
+  for (let v = Math.ceil(y0 / passo) * passo; v <= y1; v += passo) {
+    g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${m.l - 8}" y="${Y(v) + 4}" text-anchor="end">${v}%</text>`;
+  }
+  if (50 >= y0 && 50 <= y1) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(50)}" y2="${Y(50)}" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+  g += `<text x="${m.l}" y="${H - 8}">${pct(x0)} apuradas</text><text x="${W - m.r}" y="${H - 8}" text-anchor="end">${pct(x1)}</text>`;
+  const rot = [];
+  for (const c of top) {
+    const pts = hist.filter(h => h.v[c.k] != null).map(h => [X(h.ua), Y(h.v[c.k])]);
+    if (!pts.length) continue;
+    g += `<polyline fill="none" stroke="${esc(c.cor)}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" points="${pts.map(p => p.join(',')).join(' ')}"/>`;
+    const [lx, ly] = pts[pts.length - 1];
+    g += `<circle cx="${lx}" cy="${ly}" r="4.5" fill="${esc(c.cor)}"/>`;
+    rot.push({y: ly, c});
+  }
+  rot.sort((a, b) => a.y - b.y);
+  for (let i = 1; i < rot.length; i++) if (rot[i].y - rot[i - 1].y < 17) rot[i].y = rot[i - 1].y + 17;
+  for (const o of rot) g += `<text class="rotulo" x="${W - m.r + 12}" y="${o.y + 5}">${esc(curto(o.c.nome))} ${pct(o.c.vp)}</text>`;
+  svg.innerHTML = g;
+}
+
+/* ===== vistas ===== */
+function vistaHome() {
+  let mapa, br = null;
+  const v = {
+    titulo: 'Apuração 2026',
+    fontes: [['presidente', 'BR']],
+    estados: 'presidente',
+    montar(app) {
+      app.innerHTML = `<section class="home">
+        <h1 class="titulo">${TURNO === 2 ? '2º turno para presidente' : 'Onde você quer acompanhar?'}</h1>
+        <p class="local">Escolha um estado no mapa ou veja o país todo.</p>
+        <a class="tecla grande" href="#/br">Brasil inteiro<small class="num-t" id="brSub"></small></a>
+        <div class="mapa" id="mapa"></div>
+      </section>`;
+      mapa = criarMapa($('mapa'), uf => { location.hash = `#/${uf.toLowerCase()}`; });
+    },
+    pintar([b]) { br = b; v.repintar(); },
+    repintar() {
+      const porUF = est.presidente?.dados || {};
+      pintarTiles(mapa, porUF);
+      mapa.leg.innerHTML = legendaLideres(porUF, 'Quem lidera para presidente');
+      if (br) $('brSub').textContent = `${pct(br.ua)} das urnas apuradas`;
+    },
+  };
+  return v;
+}
+
+function vistaMaj(loc, cargo) {
+  const br = loc === 'BR', sen = CARGOS[cargo].tipo === 'sen';
+  const hk = `apur26-tse-t${TURNO}-${loc}-${cargo}`;
+  let hist = carregarHist(hk), ant = new Map(), cands = [], linhas = new Map();
+  let mapa = null, modo = 'lider';
+  const mudarModo = k => {
+    modo = k; $('modo').value = k;
+    pintarMapa();
+    if (k !== 'lider') $('mapa').scrollIntoView({behavior: reduz ? 'auto' : 'smooth', block: 'center'});
+  };
+  function pintarMapa() {
+    if (!mapa) return;
+    const fonte = est.presidente?.dados || {};
+    const alvo = modo === 'lider' ? null : cands.find(c => c.k === modo);
+    const r = pintarTiles(mapa, fonte, alvo);
+    mapa.leg.innerHTML = alvo
+      ? `<p>Votos de ${esc(alvo.nome)} por estado</p><div class="escala" style="--c:${esc(alvo.cor)}"></div>
+         <div class="escala-rot num-t"><span>${r.max ? pct(r.min, 1) : ''}</span><span>${r.max ? pct(r.max, 1) : ''}</span></div>`
+      : legendaLideres(fonte, 'Quem lidera');
+    const box = $('porEstado');
+    if (box) box.innerHTML = Object.entries(REGIOES).map(([reg, ufs]) => `<div class="regiao"><h3>${reg}</h3>${ufs.map(uf => {
+      const s = fonte[uf], a = s?.cands[0], b = s?.cands[1];
+      return `<a class="estado" href="#/${uf.toLowerCase()}">
+        <div class="estado-top"><b>${esc(NOMES[uf])}</b><span class="num-t">${s ? pct(s.ua) + ' apuradas' : 'carregando'}</span></div>
+        ${a ? `<div class="par"><span>${esc(curto(a.nome))} <b class="num-t">${pct(a.vp)}</b></span>${b ? `<span>${esc(curto(b.nome))} <b class="num-t">${pct(b.vp)}</b></span>` : ''}</div>
+        <div class="split"><i style="width:${Math.min(100, a.vp)}%;background:${esc(a.cor)}"></i>${b ? `<i style="width:${Math.min(100, b.vp)}%;background:${esc(b.cor)}"></i>` : ''}</div>` : ''}</a>`;
+    }).join('')}</div>`).join('');
+  }
+  const v = {
+    titulo: `${nomeCargo(cargo, loc)}, ${br ? 'Brasil' : NOMES[loc]}`,
+    fontes: [[cargo, loc]],
+    estados: br ? 'presidente' : null,
+    montar(app) {
+      const n = sen ? 3 : 2;
+      app.innerHTML = `${topo(loc, cargo)}
+        <h1 class="titulo">${esc(nomeCargo(cargo, loc))}</h1><p class="local">${br ? 'Brasil' : esc(NOMES[loc])}</p>
+        ${HTML_APUR}${HTML_DUELO}
+        ${TURNO === 2 ? (br ? `<div class="grade">
+          <section><div class="mapa-top"><h2 class="sec">Por estado</h2>
+            <select id="modo" aria-label="Mostrar no mapa"><option value="lider">Quem lidera</option></select></div>
+            <p class="dica">Toque num estado para ver o resultado dele.</p><div class="mapa" id="mapa"></div></section>
+          <section><h2 class="sec">Votação</h2>${HTML_TOT}<h2 class="sec" style="margin-top:30px">Estado por estado</h2><div id="porEstado"></div></section>
+        </div><div class="evol-wrap">${HTML_EVOL('Evolução da apuração')}</div>`
+          : `<div class="grade"><section><h2 class="sec">Votação</h2>${HTML_TOT}</section><section>${HTML_EVOL('Evolução da apuração')}</section></div>`)
+        : `<div class="grade">
+          <section><h2 class="sec">Demais candidatos</h2><ol id="lista"></ol>${HTML_TOT}</section>
+          <section>${br ? `<div class="mapa-top"><h2 class="sec">Por estado</h2>
+            <select id="modo" aria-label="Mostrar no mapa"><option value="lider">Quem lidera</option></select></div>
+            <p class="dica">Toque num estado para ver o resultado dele.</p><div class="mapa" id="mapa"></div>`
+            : HTML_EVOL(`Evolução dos ${n} primeiros`)}</section>
+        </div>${br ? `<div class="evol-wrap">${HTML_EVOL('Evolução dos 2 primeiros')}</div>` : ''}`}`;
+      if (br) {
+        mapa = criarMapa($('mapa'), uf => { location.hash = `#/${uf.toLowerCase()}`; });
+        $('modo').addEventListener('change', e => mudarModo(e.target.value));
+      }
+    },
+    pintar([dd]) {
+      cands = ordenar((dd.c || []).map(cand));
+      const vagas = Number(dd.stc) || (sen ? 2 : 1);
+      const t = totais(dd);
+      pintarApur(dd.ua, `${nf.format(t.tvv)} votos válidos`);
+      pintarDuelo(TURNO === 2 ? [...cands].sort((x, y) => Number(x.num) - Number(y.num)) : cands, ant, sen, vagas);
+      if ($('lista')) pintarLista($('lista'), cands.slice(2), linhas, br ? mudarModo : null);
+      pintarTotais(dd);
+      if (br) {
+        const s = $('modo'), chave = cands.map(c => c.k).join();
+        if (s.dataset.k !== chave) {
+          s.dataset.k = chave;
+          s.innerHTML = '<option value="lider">Quem lidera</option>' + cands.map(c => `<option value="${esc(c.k)}">Votos de ${esc(c.nome)}</option>`).join('');
+          s.value = cands.some(c => c.k === modo) ? modo : 'lider';
+        }
+        pintarMapa();
+      }
+      hist = registrar(hk, hist, dd.ua, cands);
+      desenharGrafico(hist, cands.slice(0, sen ? 3 : 2));
+      ant = new Map(cands.map(c => [c.k, {v: c.v, vp: c.vp}]));
+      const l = cands[0];
+      if (l) document.title = `${pct(dd.ua)} | ${curto(l.nome)} ${pct(l.vp)} | ${nomeCargo(cargo, loc)}`;
+    },
+    repintar() { pintarMapa(); },
+    redesenhar() { desenharGrafico(hist, cands.slice(0, sen ? 3 : 2)); },
+  };
+  return v;
+}
+
+function vistaPanorama(cargo) {
+  let mapa;
+  const prop = CARGOS[cargo].tipo === 'prop';
+  const v = {
+    titulo: `${nomeCargo(cargo, 'BR')} | Apuração 2026`,
+    fontes: [],
+    estados: cargo,
+    ref: () => resumoEstados(cargo),
+    montar(app) {
+      app.innerHTML = `${topo('BR', cargo)}
+        <h1 class="titulo">${esc(nomeCargo(cargo, 'BR'))}</h1><p class="local">Brasil, estado por estado</p>
+        ${HTML_APUR}
+        <div class="grade">
+          <section class="fixo"><h2 class="sec">${prop ? 'Mais votado em cada estado' : 'Quem lidera em cada estado'}</h2>
+            <p class="dica">Toque num estado para ver a lista completa.</p><div class="mapa" id="mapa"></div></section>
+          <section id="regioes"></section>
+        </div>`;
+      mapa = criarMapa($('mapa'), uf => { location.hash = `#/${uf.toLowerCase()}/${cargo}`; });
+    },
+    pintar() { v.repintar(); },
+    repintar() {
+      const porUF = est[cargo]?.dados || {}, r = resumoEstados(cargo);
+      pintarApur(r.ua, `${r.n} de 27 estados com dados`);
+      pintarTiles(mapa, porUF);
+      mapa.leg.innerHTML = legendaLideres(porUF, 'Por partido', true);
+      $('regioes').innerHTML = Object.entries(REGIOES).map(([reg, ufs]) => `<div class="regiao"><h3>${reg}</h3>${ufs.map(uf => {
+        const s = porUF[uf], [a, b] = s?.cands || [];
+        return `<a class="estado" href="#/${uf.toLowerCase()}/${cargo}">
+          <div class="estado-top"><b>${esc(NOMES[uf])}</b><span class="num-t">${s ? pct(s.ua) + ' apuradas' : 'carregando'}</span></div>
+          ${a ? `<div class="par"><span>${esc(a.nome)} <b class="num-t">${pct(a.vp)}</b></span>${b ? `<span>${esc(b.nome)} <b class="num-t">${pct(b.vp)}</b></span>` : ''}</div>
+          <div class="split"><i style="width:${Math.min(100, a.vp)}%;background:${esc(a.cor)}"></i>${b ? `<i style="width:${Math.min(100, b.vp)}%;background:${esc(b.cor)}"></i>` : ''}</div>` : ''}</a>`;
+      }).join('')}</div>`).join('');
+    },
+  };
+  return v;
+}
+
+function vistaProp(loc, cargo) {
+  let ant = new Map(), cs = [], busca = '', limite = 30, timerBusca;
+  function pintarTodos() {
+    const ol = $('todos');
+    if (!ol) return;
+    const q = slug(busca);
+    const max = cs[0]?.v || 1;
+    const filtrados = q ? cs.filter(c => slug(c.nome + c.partido + c.num).includes(q)) : cs;
+    ol.innerHTML = filtrados.slice(0, limite).map(c => {
+      const t = tagDe(c), pos = cs.indexOf(c) + 1, [src, ...alt] = c.img;
+      return `<li class="cand" style="--c:${esc(c.cor)}"><div class="foto"><span>${esc(iniciais(c.nome))}</span>${src ? `<img loading="lazy" alt="" src="${esc(src)}" data-alt="${esc(alt.join('|'))}" onerror="fotoErro(this)">` : ''}</div>
+        <div><div class="topo"><span class="pos-n">${pos}º</span>${c.num ? `<span class="num">${esc(c.num)}</span>` : ''}<span class="nome">${esc(c.nome)}</span>${t ? `<span class="tag">${t}</span>` : ''}</div>
+        <div class="partido">${esc(c.partido)}</div><div class="barra"><i style="width:${(c.v / max * 100).toFixed(1)}%"></i></div></div>
+        <div class="placar"><div class="pct num-t">${pct(c.vp)}</div><div class="votos num-t">${nf.format(c.v)} votos</div></div></li>`;
+    }).join('') || '<li class="aviso">Nenhum candidato encontrado.</li>';
+    $('mais').hidden = filtrados.length <= limite;
+  }
+  return {
+    titulo: `${nomeCargo(cargo, loc)}, ${NOMES[loc]}`,
+    fontes: [[cargo, loc]],
+    montar(app) {
+      app.innerHTML = `${topo(loc, cargo)}
+        <h1 class="titulo">${esc(nomeCargo(cargo, loc))}</h1><p class="local">${esc(NOMES[loc])}</p>
+        ${HTML_APUR}
+        <h2 class="sec" style="margin-top:22px">Mais votados</h2>
+        <section class="podio"><article class="lado compacto" id="p1"></article><article class="lado compacto" id="p2"></article><article class="lado compacto" id="p3"></article></section>
+        <section class="bancada"><h2 class="sec">Vagas</h2><p id="vagasTxt" class="local"></p><div class="dots" id="dots"></div><div class="chips" id="chips"></div></section>
+        <div class="grade">
+          <section><h2 class="sec">Todos os candidatos</h2>
+            <input class="busca" id="busca" type="search" placeholder="Buscar por nome, partido ou número" aria-label="Buscar candidato">
+            <p class="dica">Barras em relação ao mais votado.</p>
+            <ol id="todos"></ol><button class="mais" id="mais" type="button" hidden>Mostrar mais</button></section>
+          <section>${HTML_TOT}</section>
+        </div>`;
+      $('busca').addEventListener('input', e => { clearTimeout(timerBusca); timerBusca = setTimeout(() => { busca = e.target.value; limite = 30; pintarTodos(); }, 150); });
+      $('mais').addEventListener('click', () => { limite += 50; pintarTodos(); });
+    },
+    pintar([d]) {
+      cs = ordenar((d.c || []).map(cand));
+      const vagas = Number(d.stc) || 0;
+      const eleitos = cs.filter(c => c.eleito);
+      const t = totais(d);
+      pintarApur(d.ua, `${nf.format(t.tvv)} votos válidos`);
+      ['p1', 'p2', 'p3'].forEach((id, i) => pintarLado($(id), cs[i], ant, i + 1));
+      $('vagasTxt').textContent = vagas ? (eleitos.length ? `${eleitos.length} de ${vagas} vagas definidas` : `${vagas} vagas, nenhuma definida ainda`) : (eleitos.length ? `${eleitos.length} eleitos` : 'Nenhuma vaga definida ainda');
+      const grupos = new Map();
+      for (const c of eleitos) { const g = grupos.get(c.partido) || {p: c.partido, cor: c.cor, n: 0}; g.n++; grupos.set(c.partido, g); }
+      const lista = [...grupos.values()].sort((a, b) => b.n - a.n);
+      const dots = lista.flatMap(g => Array(g.n).fill(`<i class="dot-v" style="--c:${esc(g.cor)}" title="${esc(g.p)}"></i>`));
+      for (let i = dots.length; i < vagas; i++) dots.push('<i class="dot-v"></i>');
+      $('dots').innerHTML = dots.join('');
+      $('chips').innerHTML = lista.map(g => `<span><i style="--c:${esc(g.cor)}"></i>${esc(g.p)} ${g.n}</span>`).join('');
+      pintarTodos();
+      pintarTotais(d);
+      ant = new Map(cs.slice(0, 3).map(c => [c.k, {v: c.v, vp: c.vp}]));
+    },
+  };
+}
+
+function vistaResultado(loc, cargo) {
+  if (loc === 'BR' && cargo !== 'presidente') return vistaPanorama(cargo);
+  if (CARGOS[cargo].tipo === 'prop') return vistaProp(loc, cargo);
+  return vistaMaj(loc, cargo);
+}
+
+/* rotas */
+function rota() {
+  const [l = '', cargo = ''] = location.hash.replace(/^#\/?/, '').split('/').map(s => decodeURIComponent(s).toLowerCase());
+  const uf = l.toUpperCase();
+  if (!l || (l !== 'br' && !NOMES[uf])) return vistaHome();
+  const loc = l === 'br' ? 'BR' : uf;
+  return vistaResultado(loc, cargosAtivos().includes(cargo) ? cargo : 'presidente');
+}
+
+/* ciclo de leitura e medidor */
+let vista = null, ctrl = null, timer = null, proxima = 0, ultimaOk = null;
+const medidas = new Map();
+const chaveDe = v => JSON.stringify(v.fontes[0] || v.estados);
+function medir(k, d) {
+  const sig = [d?.date, d?.time, d?.ua, d?.tvv].join('|');
+  const agora = Date.now();
+  const m = medidas.get(k);
+  if (!m) { medidas.set(k, {sig, desde: agora, mud: []}); return; }
+  if (m.sig !== sig) { m.sig = sig; m.mud.push(agora); if (m.mud.length > 30) m.mud.shift(); }
+}
+function textoMedidor() {
+  if (!vista) return '';
+  const m = medidas.get(chaveDe(vista));
+  if (!m) return '';
+  const agora = Date.now(), ult = m.mud[m.mud.length - 1];
+  const partes = [ult ? `TSE mudou há ${dur(agora - ult)}` : `Sem mudança há ${dur(agora - m.desde)}`];
+  if (m.mud.length >= 2) partes.push(`muda a cada ~${dur(mediana(m.mud.slice(1).map((t, i) => t - m.mud[i])))}`);
+  return partes.join(', ');
+}
+
+function estado(tipo, texto, erro) {
+  $('status').className = 'status ' + tipo;
+  $('txtStatus').textContent = texto;
+  $('erro').hidden = !erro;
+  $('erro').textContent = erro || '';
+}
+
+async function ciclo() {
+  clearTimeout(timer);
+  ctrl?.abort();
+  const v = vista, c = ctrl = new AbortController();
+  estado('carregando', ultimaOk || 'Carregando dados do TSE…');
+  const to = setTimeout(() => c.abort(), 15000);
+  try {
+    const res = await Promise.allSettled(v.fontes.map(([cg, uf]) => lerU(cg, uf, c.signal)));
+    if (v !== vista) return;
+    if (v.estados) { const r = estados(v.estados); if (!r.ok && r.job) await r.job; if (v !== vista) return; }
+    if (v.fontes.length && res[0].status !== 'fulfilled') throw res[0].reason;
+    if (!v.fontes.length && !Object.keys(est[v.estados]?.dados || {}).length) throw new NaoAchou();
+    const dados = res.map(r => r.status === 'fulfilled' ? r.value : null);
+    const ref = dados[0] || v.ref?.();
+    medir(chaveDe(v), ref);
+    try { v.pintar(dados); } catch (e) { console.error(e); throw new Error('formato inesperado dos dados'); }
+    $('app').querySelector('.aviso.falta')?.remove();
+    ultimaOk = ref?.date ? `TSE: dados de ${ref.date} às ${ref.time}` : 'Dados carregados';
+    estado('ok', ultimaOk);
+  } catch (e) {
+    if (v !== vista) return;
+    if (e instanceof NaoAchou) {
+      if (!$('app').querySelector('.aviso.falta')) ($('app').querySelector('.local') || $('app').lastElementChild)?.insertAdjacentHTML('afterend', '<p class="aviso falta">O TSE ainda não publicou este resultado. A página tenta de novo sozinha.</p>');
+      estado('erro', ultimaOk || 'Sem dados', 'Arquivo ainda não publicado pelo TSE.');
+    } else {
+      const motivo = e?.name === 'AbortError' ? 'tempo esgotado' : e instanceof TypeError ? 'rede ou CORS bloqueado' : (e?.message || 'erro');
+      estado('erro', ultimaOk || 'Sem dados', `Falha ao ler dados (${motivo}). Nova tentativa automática.`);
+    }
+  } finally {
+    clearTimeout(to);
+    if (v === vista) { proxima = Date.now() + INTERVALO; timer = setTimeout(ciclo, INTERVALO); }
+  }
+}
+
+function irPara() {
+  ultimaOk = null;
+  vista = rota();
+  document.title = vista.titulo;
+  vista.montar($('app'));
+  window.scrollTo(0, 0);
+  ciclo();
+}
+
+setInterval(() => {
+  const s = Math.max(0, Math.ceil((proxima - Date.now()) / 1000));
+  $('contagem').textContent = proxima ? `Próxima leitura em ${s} s` : '';
+  $('medidor').textContent = textoMedidor();
+}, 250);
+
+$('turnoTxt').textContent = `${TURNO}º turno`;
+$('btn').addEventListener('click', ciclo);
+addEventListener('hashchange', irPara);
+document.addEventListener('visibilitychange', () => { if (!document.hidden && Date.now() > proxima) ciclo(); });
+let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => vista?.redesenhar?.(), 150); });
+descobrir().then(irPara);
+</script>
+</body>
+</html>
