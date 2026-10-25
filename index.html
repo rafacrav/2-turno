@@ -588,7 +588,9 @@ function topo(loc, cargo) {
   const l = loc.toLowerCase();
   const abas = `<nav class="abas" aria-label="Cargos">${cargosAtivos().map(k =>
     `<a class="aba" href="#/${l}${k === 'presidente' ? '' : '/' + k}"${k === cargo ? ' aria-current="page"' : ''}>${esc(nomeCargo(k, loc))}</a>`).join('')}</nav>`;
-  return `<div class="vista-top"><a class="voltar" href="#/">Voltar</a>${cargosAtivos().length > 1 ? abas : ''}</div>`;
+  const voltar = loc === 'BR' ? '' : '<a class="voltar" href="#/">Voltar ao Brasil</a>';
+  const extra = cargosAtivos().length > 1 ? abas : '';
+  return voltar || extra ? `<div class="vista-top">${voltar}${extra}</div>` : '';
 }
 
 function pintarApur(ua, extra) {
@@ -936,7 +938,7 @@ function vistaMaj(loc, cargo) {
     }).join('')}</div>`).join('');
   }
   const v = {
-    titulo: `${nomeCargo(cargo, loc)}, ${br ? 'Brasil' : NOMES[loc]}`,
+    titulo: br ? 'Apuração 2º turno 2026 ao vivo: Lula x Flávio Bolsonaro' : `${nomeCargo(cargo, loc)}, ${NOMES[loc]}`,
     fontes: [[cargo, loc]],
     estados: br ? 'presidente' : null,
     montar(app) {
@@ -984,7 +986,7 @@ function vistaMaj(loc, cargo) {
       desenharGrafico(hist, cands.slice(0, sen ? 3 : 2));
       ant = new Map(cands.map(c => [c.k, {v: c.v, vp: c.vp}]));
       const l = cands[0];
-      if (l) document.title = `${pct(dd.ua)} | ${curto(l.nome)} ${pct(l.vp)} | ${nomeCargo(cargo, loc)}`;
+      if (l) document.title = br ? `${pct(dd.ua)} apurado | Apuração 2º turno 2026 ao vivo: Lula x Flávio Bolsonaro` : `${pct(dd.ua)} | ${curto(l.nome)} ${pct(l.vp)} | ${NOMES[loc]}`;
     },
     repintar() { pintarMapa(); },
     redesenhar() { desenharGrafico(hist, cands.slice(0, sen ? 3 : 2)); },
@@ -1098,7 +1100,7 @@ function vistaResultado(loc, cargo) {
 function rota() {
   const [l = '', cargo = ''] = location.hash.replace(/^#\/?/, '').split('/').map(s => decodeURIComponent(s).toLowerCase());
   const uf = l.toUpperCase();
-  if (!l || (l !== 'br' && !NOMES[uf])) return vistaHome();
+  if (!l || (l !== 'br' && !NOMES[uf])) return vistaResultado('BR', 'presidente');
   const loc = l === 'br' ? 'BR' : uf;
   return vistaResultado(loc, cargosAtivos().includes(cargo) ? cargo : 'presidente');
 }
