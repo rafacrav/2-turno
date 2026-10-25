@@ -73,7 +73,8 @@ obter('comum/config/ele-c.json').then(c => {
   }
   console.log(`Eleição do 2º turno: ${VIGIAR[0].split('/')[1]}`);
 }).catch(() => console.log('ele-c.json indisponível, usando 6258'));
-setInterval(() => { for (const c of VIGIAR) obter(c).catch(() => {}); }, 5000);
+// Só no seu PC: na Vercel não há processo contínuo, então o vigia fica desligado
+if (!process.env.VERCEL) setInterval(() => { for (const c of VIGIAR) obter(c).catch(() => {}); }, 5000);
 
 http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://localhost');
@@ -82,9 +83,13 @@ http.createServer(async (req, res) => {
     if (caminho.includes('..')) { res.writeHead(400); return res.end(); }
     try {
       const c = await obter(caminho);
+      // s-maxage: a CDN da Vercel guarda a resposta por alguns segundos e entrega a todos,
+      // então o TSE recebe 1 pedido por arquivo, não 1 por pessoa
       res.writeHead(c.status, {
         'Content-Type': c.tipo,
-        'Cache-Control': caminho.includes('/fotos/') ? 'public, max-age=86400' : 'no-store',
+        'Cache-Control': caminho.includes('/fotos/') ? 'public, max-age=86400, s-maxage=86400'
+          : c.status === 200 ? 'public, max-age=0, s-maxage=5, stale-while-revalidate=20'
+          : 'public, max-age=0, s-maxage=30',
       });
       return res.end(c.corpo);
     } catch (e) {
@@ -92,6 +97,11 @@ http.createServer(async (req, res) => {
       return res.end(String(e));
     }
   }
-  res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+  if (u.pathname === '/image.png') {
+    res.writeHead(200, {'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=3600, s-maxage=86400'});
+    return res.end(fs.readFileSync(path.join(__dirname, 'image.png')));
+  }
+  if (u.pathname === '/favicon.ico' || u.pathname === '/robots.txt') { res.writeHead(404); return res.end(); }
+  res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=0, s-maxage=60'});
   res.end(fs.readFileSync(path.join(__dirname, 'index.html')));
 }).listen(PORT, () => console.log('Abra http://localhost:' + PORT + '\n2º turno, fonte TSE (resultados.tse.jus.br). Mudanças aparecem aqui embaixo:'));
